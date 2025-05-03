@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+function pedirHistorico()
+ 
+ {
+ 
+
+            //Esta función es para añadir ejercicios
+            var xhr = new XMLHttpRequest();
+            
+            // Definir la URL y el parámetro GET
+            var url = "./index.php?accion=historico";
+            
+            // Abrir la petición GET
+            xhr.open("GET", url, true);
+            
+            // Establecer la función que se ejecutará cuando la petición sea completada
+            xhr.onload = function() {
+                console.log(xhr.readyState+" "+xhr.status);
+                if (xhr.status === 200) {
+                    // Si la respuesta es exitosa (código 200), muestra la respuesta en consola
+                    txt = xhr.responseText.trim();
+                 //   alert(txt);
+                    var response = JSON.parse(txt);
+                    tratarJSONHistorico(response);
+                } else {
+                    // Si ocurre un error, muestra el error
+                    console.error("Error en la petición: " + xhr.status);
+                }
+            };
+            xhr.send();
+    
+}
+function tratarJSONHistorico(response)
+{
+    // Crear un contenedor para la tabla
+    var container = document.createElement("div");
+    container.style.overflowX = "auto"; // Hacer scroll horizontal si es necesario
+
+    // Crear la tabla
+    var table = document.createElement("table");
+    table.style.borderCollapse = "collapse";
+    table.style.width = "100%";
+    table.style.marginTop = "20px";
+
+    // Crear el encabezado de la tabla
+    var thead = document.createElement("thead");
+    var headerRow = document.createElement("tr");
+
+    // Crear las celdas del encabezado
+    
+
+
+    // Crear el cuerpo de la tabla
+    var tbody = document.createElement("tbody");
+
+    // Recorrer el JSON y añadir filas a la tabla
+    for (var fecha in response) {
+        if (response.hasOwnProperty(fecha)) {
+            var ejercicios = response[fecha];
+            var row_encabezado = document.createElement("tr");
+
+  var tdFecha = document.createElement("td");
+  tdFecha.setAttribute("colspan", "2"); // Hacer que la celda ocupe dos columnas
+  
+tdFecha.textContent = fecha;
+tdFecha.style.border = "1px solid #ddd";
+tdFecha.style.padding = "8px";
+tdFecha.style.backgroundColor = "#f2f2ff"; // Color de fondo para la celda de fecha
+tdFecha.style.fontWeight = "bold"; // Negrita para la fecha
+tdFecha.style.verticalAlign = "top";
+row_encabezado.appendChild(tdFecha);
+tbody.appendChild(row_encabezado);
+            // Añadir una fila por cada ejercicio
+            ejercicios.forEach(function(ejercicio) {
+                var row = document.createElement("tr");
+
+                // Celda de la fecha
+             /*   var tdFecha = document.createElement("td");
+                tdFecha.textContent = fecha;
+                tdFecha.style.border = "1px solid #ddd";
+                tdFecha.style.padding = "8px";
+                tdFecha.style.verticalAlign = "top";*/
+
+                // Celda del ejercicio
+                var tdEjercicio = document.createElement("td");
+                tdEjercicio.textContent = ejercicio.nombre;
+                tdEjercicio.style.border = "1px solid #ddd";
+                tdEjercicio.style.padding = "8px";
+
+                // Celda de la observación
+                var tdObservacion = document.createElement("td");
+                tdObservacion.textContent = ejercicio.observacion;
+                tdObservacion.style.border = "1px solid #ddd";
+                tdObservacion.style.padding = "8px";
+
+                // Añadir las celdas a la fila
+               // row.appendChild(tdFecha);
+                row.appendChild(tdEjercicio);
+                row.appendChild(tdObservacion);
+
+                // Añadir la fila al cuerpo de la tabla
+                tbody.appendChild(row);
+            });
+        }
+    }
+
+    // Añadir el cuerpo a la tabla
+    table.appendChild(tbody);
+
+    // Añadir la tabla al contenedor
+    container.appendChild(table);
+
+    // Añadir el contenedor al cuerpo del documento
+    document.body.appendChild(container);
+}
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Página Responsive con Acciones</title>
+    <style>
+        /* Estilo básico para la página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Contenedor de la página */
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilo del encabezado */
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        /* Estilo de los enlaces */
+        .links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .links a {
+            font-size: 18px;
+            margin: 0 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .links a:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilo responsive */
+        @media (max-width: 600px) {
+            .links a {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body onload="pedirHistorico()">
+
+    <div class="container">
+      
+
+        <div class="links">
+            <!-- Enlaces con parámetros de acción -->
+            <a href="index.php?accion=crear">Crear</a>
+            <a href="index.php?accion=mostrar">Mostrar</a>
+            <a href="index.php?accion=entreno_abierto">Entreno abierto</a><!---->
+            
+        </div>
+    </div>
+
+</body>
+</html>
