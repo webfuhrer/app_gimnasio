@@ -1,8 +1,5 @@
 <?php	
-	$host = 'localhost';  // Dirección del servidor de la base de datos
-    $usuario = 'root';    // Usuario de la base de datos
-    $contrasena = '1234';     // Contraseña del usuario de la base de datos PWD root para el móvil
-    $base_de_datos = 'gimnasio'; // Nombre de la base de datos
+include("config.php");
 
 function mostrarHistorico()
 {
@@ -24,9 +21,10 @@ if ($result->num_rows > 0) {
        {
       //  echo 'Fecha:'.$row["fecha"] ;
         $obj=new stdClass();
-         $obj->nombre=$row["nombre_ejercicio"];
-         $obj->observacion=$row["observacion"];
-
+         
+        $obj->nombre=mb_convert_encoding( $row["nombre_ejercicio"], 'ISO-8859-1', 'UTF-8');
+        $obj->observacion=mb_convert_encoding( $row["observacion"], 'ISO-8859-1', 'UTF-8');
+      
        
 
         //Si existe ya ese array de esa fecha, le añado
@@ -38,8 +36,8 @@ if ($result->num_rows > 0) {
         //Si no existe lo creo
         $ejercicios[$row["fecha"]]=array();
         $obj=new stdClass();
-        $obj->nombre=$row["nombre_ejercicio"];
-        $obj->observacion=$row["observacion"];
+        $obj->nombre=mb_convert_encoding( $row["nombre_ejercicio"], 'ISO-8859-1', 'UTF-8');
+        $obj->observacion=mb_convert_encoding( $row["observacion"], 'ISO-8859-1', 'UTF-8');
 
       
 
@@ -48,7 +46,7 @@ if ($result->num_rows > 0) {
        }
     }
 
-    print_r(json_encode($ejercicios));
+    print_r(json_encode( $ejercicios) );
 } 
 }
     function crearBDTablas()
@@ -100,9 +98,9 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $ejercicios[] = array(
             "id" => $row["id"],
-            "nombre" => $row["nombre"],
-            "parte" => $row["parte"],
-            "observaciones" => $row["observaciones"]
+            "nombre" => mb_convert_encoding($row["nombre"], 'ISO-8859-1', 'UTF-8'),
+            "parte" => mb_convert_encoding($row["parte"], 'ISO-8859-1', 'UTF-8'),
+            "observaciones" =>  mb_convert_encoding($row["observaciones"],'ISO-8859-1', 'UTF-8')
         );
     }
 
@@ -417,7 +415,7 @@ function devolverSiguienteEntreno()
     $usuario ,
     $contrasena ,
     $base_de_datos;
-    $sql="WITH ultimo_entreno AS ( SELECT id_ent AS id_ultimo_entreno FROM t_entrenos_hechos ORDER BY fecha DESC LIMIT 1 ), siguiente_entreno AS ( SELECT id_entreno FROM t_entrenos_plantilla WHERE id_entreno > (SELECT id_ultimo_entreno FROM ultimo_entreno) ORDER BY id ASC LIMIT 1 ) SELECT CASE WHEN (SELECT id_entreno FROM siguiente_entreno) IS NOT NULL THEN (SELECT id_entreno FROM siguiente_entreno) ELSE (SELECT MIN(id_entreno) FROM t_entrenos_plantilla) END AS proximo_entreno;";
+    $sql="WITH ultimo_entreno AS ( SELECT id_ent AS id_ultimo_entreno FROM t_entrenos_hechos WHERE id_ent!=0 ORDER BY fecha DESC LIMIT 1 ), siguiente_entreno AS ( SELECT id_entreno FROM t_entrenos_plantilla WHERE id_entreno > (SELECT id_ultimo_entreno FROM ultimo_entreno) ORDER BY id ASC LIMIT 1 ) SELECT CASE WHEN (SELECT id_entreno FROM siguiente_entreno) IS NOT NULL THEN (SELECT id_entreno FROM siguiente_entreno) ELSE (SELECT MIN(id_entreno) FROM t_entrenos_plantilla) END AS proximo_entreno;";
     $conn = new mysqli($host, $usuario, $contrasena, $base_de_datos);
     
 

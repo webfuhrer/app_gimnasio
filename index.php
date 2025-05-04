@@ -5,6 +5,7 @@ switch ($accion) {
         mostrarEntreno(0);//0 significa que se va a crear de forma manual
         break;
     case "historico":
+ 
         mostrarHistorico();
         break;
     case 'crear':
@@ -33,3 +34,4 @@ switch ($accion) {
         break;
 }
 ?>
+   
