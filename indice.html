@@ -1,0 +1,3227 @@
+# Juego HTML para estudiar el glosario
+
+He preparado un juego completo en HTML para estudiar definiciones del glosario.
+
+## Cómo usarlo
+
+1. Copia el código HTML de abajo.
+2. Guárdalo como `juego_glosario.html`.
+3. Ábrelo con cualquier navegador.
+4. Puedes añadir más definiciones dentro del array `cards`.
+
+---
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego del Glosario</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 8px;
+    font-size: 16px;
+}
+
+.primary {
+    background: #2563eb;
+    color: white;
+}
+
+.secondary {
+    background: #10b981;
+    color: white;
+}
+
+.term {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.definition {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.score {
+    margin-top: 15px;
+    font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Juego para estudiar el glosario</h1>
+
+<button class="primary" onclick="startFlashcards()">Modo Flashcards</button>
+<button class="secondary" onclick="startQuiz()">Modo Quiz</button>
+
+<div class="card">
+<div id="game"></div>
+</div>
+
+</div>
+
+<script>
+
+const cards=[
+    {
+        "term": "Ábaco",
+        "definition": "Instrumento que servía para realizar manualmente cálculos aritméticos mediante un sistema de bolas móviles insertadas en alambres o hilos."
+    },
+    {
+        "term": "A capella",
+        "definition": "Canto interpretado únicamente con la voz y sin acompañamiento musical."
+    },
+    {
+        "term": "Abad",
+        "definition": "Padre. Superior de un monasterio a quien los monjes deben obediencia."
+    },
+    {
+        "term": "Abadengo",
+        "definition": "Bienes y tierras pertenecientes a una abadía. Jurisdicción de un abad."
+    },
+    {
+        "term": "Abadía",
+        "definition": "Monasterio regido por un abad o una abadesa."
+    },
+    {
+        "term": "Abadía madre",
+        "definition": "Abadía que ha creado otras nuevas sobre las que ejerce cierta jurisdicción."
+    },
+    {
+        "term": "Abasíes; Abbasíes",
+        "definition": "Mus. Segunda dinastía califal (750-1258). Toma su nombre de Abbás al-Mutálib, tío de Mahoma."
+    },
+    {
+        "term": "Abú",
+        "definition": "Mus. Padre."
+    },
+    {
+        "term": "Abencerrajes",
+        "definition": "Mus. Familia de nobles granadinos. Su nombre proviene de Banu Sarraj (Hijos del talabartero)."
+    },
+    {
+        "term": "Aceifa",
+        "definition": "Mus. Expedición militar de corta duración."
+    },
+    {
+        "term": "Ad hoc",
+        "definition": "Para esto. Para una cosa concreta."
+    },
+    {
+        "term": "Ad limina",
+        "definition": "A las puertas. A los umbrales. Visita que todos los obispos deben efectuar al Papa, cada cierto tiempo, para informarle sobre la marcha de su diócesis."
+    },
+    {
+        "term": "Ad partes Indiae per mare oceanum",
+        "definition": "A la India a través del mar océano."
+    },
+    {
+        "term": "Aglabíes",
+        "definition": "Mus. Dinastía del norte de África (800-909) fundada por Ibn Aglab. Su cha contra su hijo Carlos, Príncipe de Viana."
+    },
+    {
+        "term": "Aguja de marear",
+        "definition": "Precedente inmediato de la brújula, en la que la aguja imantada flotaba libremente sobre una superficie líquida."
+    },
+    {
+        "term": "Agustiniano",
+        "definition": "Referente a san Agustín."
+    },
+    {
+        "term": "Agustinismo",
+        "definition": "Sistema filosófico basado en el pensamiento de san Agustín."
+    },
+    {
+        "term": "Akrita",
+        "definition": "Biz. Al margen de la norma. Habitante de la frontera oriental del Imperio Bizantino."
+    },
+    {
+        "term": "al",
+        "definition": "Mus. Artículo que precede al nombre de una tribu, ciudad, región, cargo, etc."
+    },
+    {
+        "term": "Albigense",
+        "definition": "Cátaro"
+    },
+    {
+        "term": "Aldermen",
+        "definition": "Nombre que se daba en Inglaterra a los miembros del patriciado urbano."
+    },
+    {
+        "term": "Alcaicerías",
+        "definition": "Mus. Tiendas donde se venden productos elaborados de cierto valor."
+    },
+    {
+        "term": "Alcaide",
+        "definition": "Mus. Jefe militar de una fortaleza."
+    },
+    {
+        "term": "Aleya",
+        "definition": "Mus. Cada uno de los versículos del Corán"
+    },
+    {
+        "term": "Alfaquí",
+        "definition": "Mus. Experto en la ciencia del fiqh o jurisprudencia árabe."
+    },
+    {
+        "term": "Alfoz",
+        "definition": "Zona rural sobre el que una ciudad o villa ejercía su jurisdicción."
+    },
+    {
+        "term": "Algazúa",
+        "definition": "Mus. Razia."
+    },
+    {
+        "term": "Alhóndiga",
+        "definition": "Mus. Edificio dedicado a la compraventa de cereales y otras mercancías."
+    },
+    {
+        "term": "Alida",
+        "definition": "Mus. Partidario de Alí, primo y yerno de Mahoma."
+    },
+    {
+        "term": "Alisios",
+        "definition": "Vientos casi constantes que soplan entre los trópicos y el ecuador, en el sentido de las agujas del reloj, en el hemisferio"
+    },
+    {
+        "term": "Alminar",
+        "definition": "Mus. Torre de una mezquita desde la que se llama a la oración."
+    },
+    {
+        "term": "Almogávares",
+        "definition": "Tropas mercenarias de infantería aragonesas célebres en el Mediterráneo durante los siglos XIV y XV."
+    },
+    {
+        "term": "AIlmohades",
+        "definition": "Mus. Dinastía bereber que gobernó en Marruecos (1121-1269) surgida como reacción frente a los almorávides."
+    },
+    {
+        "term": "Almorávides",
+        "definition": "Mus. Dinastía bereber de origen mauritano que gobernó en Marruecos desde 1062 hasta 1147. Practicaba un Islam rigorista."
+    },
+    {
+        "term": "AImotacén",
+        "definition": "Mus. Persona que supervisaba y controlaba los mercados."
+    },
+    {
+        "term": "1l-murabitum",
+        "definition": "Mus. Especie de monje soldado que vive en un ribat."
+    },
+    {
+        "term": "11-Muwahidum",
+        "definition": "Mus. Almohades Confesores de la unidad de Dios."
+    },
+    {
+        "term": "Alquería",
+        "definition": "Mus. Casa de labor o poblado pequeño diseminado por el campo o la sierra."
+    },
+    {
+        "term": "iltan debter",
+        "definition": "Libro dorado. Recopilación de acuerdos imperiales y acuerdos de asamblea redactados en la época de Kubilay Khan."
+    },
+    {
+        "term": "imbasciator",
+        "definition": "Persona que tiene suficientes poderes para negociar y firmar acuerdos entre las partes."
+    },
+    {
+        "term": "mil",
+        "definition": "Mus. Agente del fisco."
+    },
+    {
+        "term": "mir",
+        "definition": "Mus. Ver emir."
+    },
+    {
+        "term": "A mirí",
+        "definition": "Mus. Relativo a Almanzor."
+    },
+    {
+        "term": "imsar",
+        "definition": "Mus. Campamentos militares situados en lugares estratégicos."
+    },
+    {
+        "term": "imuleto",
+        "definition": "Objeto al que se le atribuye poderes mágicos o sobrenaturales."
+    },
+    {
+        "term": "inda",
+        "definition": "Institución mongola que agrupaba wariace trihne inidase nor vínenlas de san."
+    },
+    {
+        "term": "Aniconismo!",
+        "definition": "B1Z. sin imagenes."
+    },
+    {
+        "term": "Anjevino",
+        "definition": "Relativo a los Anjou."
+    },
+    {
+        "term": "Anjou",
+        "definition": "Dinastía de origen francés que toma su nombre del condado homónimo. Reinó en Inglaterra, Francia, Sicilia, Nápoles, Hungría, Polonia y Jerusalén."
+    },
+    {
+        "term": "Annata",
+        "definition": "Renta total que producía un cargo eclesiástico durante un año."
+    },
+    {
+        "term": "Antropocentrismo",
+        "definition": "Doctrina política en la que el hombre se convierte en el centro y protagonista de todas las cosas."
+    },
+    {
+        "term": "Año Santo",
+        "definition": "Llamado también Jubileo. Fiesta de la Iglesia Católica, inspirada en el Antiguo Testamento, que se celebra cada veinticinco años, en la que se consigue la indulgencia plenaria. El primer Año santo se celebró en 1300 y fue proclamado por Bonifacio VIII. El último se celebró en el año 2000."
+    },
+    {
+        "term": "Apanage",
+        "definition": "Territorio que se concedía a los hijos menores de un monarca a cambio de su renuncia al trono."
+    },
+    {
+        "term": "Árabe",
+        "definition": "Mus. Pueblo y lengua de origen semita de la Península Arábiga."
+    },
+    {
+        "term": "Arbotante",
+        "definition": "Contrafuerte que en los edificios góticos contrarresta el empuje de los muros."
+    },
+    {
+        "term": "Arbre de sciencia",
+        "definition": "Árbol de la ciencia."
+    },
+    {
+        "term": "Arcedianato",
+        "definition": "Territorio bajo la jurisdicción de un arcediano."
+    },
+    {
+        "term": "Arcediano",
+        "definition": "Diácono de primer orden. Dignidad eclesiástica."
+    },
+    {
+        "term": "Arcipreste",
+        "definition": "Presbítero principal que ejerce su control sobre varias parroquias."
+    },
+    {
+        "term": "Arcontes",
+        "definition": "Biz. Nombre que en el Imperio Bizantino se daba a los ciudadanos nota-"
+    },
+    {
+        "term": "bles a imitación de la antigua Grecia",
+        "definition": "Deriva de arjon (mando)."
+    },
+    {
+        "term": "Árpad",
+        "definition": "Primera dinastía magiar que reinó en Hungría desde el año 896 hasta 1301."
+    },
+    {
+        "term": "Arqueelogía",
+        "definition": "Ciencia que estudia los restos de la antigiiedad."
+    },
+    {
+        "term": "Arrianismo",
+        "definition": "Biz. Herejía del siglo 1V, según la cual el Hijo no es consustancial al Padre."
+    },
+    {
+        "term": "Arriano",
+        "definition": "Seguidor de Arrio. Que practica el arrianismo."
+    },
+    {
+        "term": "Ars Antiqua",
+        "definition": "Forma musical profana cantada en lengua vulgar y acompañada por instrumentos."
+    },
+    {
+        "term": "Ars magna",
+        "definition": "Arte magna o mayor."
+    },
+    {
+        "term": "Ars Nova",
+        "definition": "Forma musical profana desarrollada desde el siglo XIV, cantada a varias voces y acompañada por instrumentos musicales. Ars moriendi; Arte de bien morir."
+    },
+    {
+        "term": "Ars predicandi",
+        "definition": "Arte de predicar bien."
+    },
+    {
+        "term": "Artes",
+        "definition": "Nombre que se daba en Florencia y otras ciudades de Italia a las asociaciones gremiales."
+    },
+    {
+        "term": "Artes liberales",
+        "definition": "Conjunto de estudios que incluían el Trivium y el Quadrivium."
+    },
+    {
+        "term": "Ascesis",
+        "definition": "Práctica religiosa, común a todas las religiones, encaminada al logro de la virtud mediante el sacrificio personal."
+    },
+    {
+        "term": "Atabeg",
+        "definition": "Mus. Gobernador de una provincia turca."
+    },
+    {
+        "term": "Averroismo",
+        "definition": "Corriente filosófica-escolástica inspirada en Averroes, filósofo hispano-musulmán del siglo XII, que propugnaba la existencia de una doble"
+    },
+    {
+        "term": "verdad",
+        "definition": "la racional y la de la fe."
+    },
+    {
+        "term": "Arzobispado",
+        "definition": "Territorio bajo la jurisdicción de un arzobispo."
+    },
+    {
+        "term": "Arzobispo",
+        "definition": "Metropolitano. Obispo de rango superior del que dependen varios e"
+    },
+    {
+        "term": "Auctoritas",
+        "definition": "Autoridad. Término que en l: Edad Media significaba la autoridad que poseía el Papa, como Vicario de Cristo para intervenir en cualquier asunto, polí. tico o religioso."
+    },
+    {
+        "term": "Audiencia",
+        "definition": "Tribunal real de última instan. cia en Castilla."
+    },
+    {
+        "term": "Áulico",
+        "definition": "Palaciego. Relativo al palacio."
+    },
+    {
+        "term": "Autarkéia",
+        "definition": "Biz. Autosuficiencia en la producción y consumo de una comunidad."
+    },
+    {
+        "term": "Autarquía",
+        "definition": "Biz. Autarkéia. Gobierno propio."
+    },
+    {
+        "term": "Autócrator",
+        "definition": "Biz. Emperador bizantino. Que ejerce un poder ilimitado por designic divino."
+    },
+    {
+        "term": "Auxilium",
+        "definition": "Auxilio o ayuda. Deber de ayuda recíproca entre el señor y su vasallo."
+    },
+    {
+        "term": "Avís",
+        "definition": "Dinastía que reinó en Portugal desde 1385 hasta 1580."
+    },
+    {
+        "term": "Aynad",
+        "definition": "Mus. Acantonamientos militares er Siria y Egipto."
+    },
+    {
+        "term": "Ayubíes; Ayyubíes",
+        "definition": "Mus. Dinastía de origen kurdo fundada por Saladino que gobernó en Siria y Egipto desde 1171 hasta 1250. Sucedieron a los fatimíes."
+    },
+    {
+        "term": "Azora",
+        "definition": "Mus. Sura."
+    },
+    {
+        "term": "Babas",
+        "definition": "Mus. Partidarios de Baba Ishac célebre predicador de Diyarbakir que se enfrentó a los turcos selyuquís. Ds a E as E A rr e o a cuyo frente habia un bey."
+    },
+    {
+        "term": "Biga",
+        "definition": "Asociación política barcelonesa, de mediados del siglo XIV, compuesta por grandes burgueses que controlaba el poder municipal."
+    },
+    {
+        "term": "Bigaire",
+        "definition": "Persona perteneciente a la Biga."
+    },
+    {
+        "term": "Bint",
+        "definition": "Mus. Hija de."
+    },
+    {
+        "term": "Bizantino",
+        "definition": "Biz. Ortodoxo. Imperio Romano de Oriente (395-1453). Toma su nombre de Bizancio."
+    },
+    {
+        "term": "Bogomilos",
+        "definition": "Cátaros. Secta búlgara de origen maniqueo del siglo X que se extendió por Europa. En el siglo XI."
+    },
+    {
+        "term": "Bombarda",
+        "definition": "Cañón primitivo, de unos diez kg. de peso, que disparaba bolas de piedra de unos 30 cm. de calibre."
+    },
+    {
+        "term": "Boreales",
+        "definition": "Del norte. Viene de Bóreas., dios del viento del norte."
+    },
+    {
+        "term": "Borgoñones",
+        "definition": "Partido surgido en Francia durante la Guerra de los Cien Años, favorable a un entendimiento con Inglaterra. Estaba capitaneado por el duque de Borgoña."
+    },
+    {
+        "term": "Boyardo",
+        "definition": "Elite militar entre los eslavos, especialmente rusos y búlgaros. En Rusia eran también poderosos propietarios y comerciantes con gran poder político."
+    },
+    {
+        "term": "Brigants",
+        "definition": "Miembro de la pequeña nobleza francesa que se dedicaba al bandolerismo."
+    },
+    {
+        "term": "Brújula",
+        "definition": "Instrumento con una aguja imantada, fijada sobre un eje vertical, que gira libremente marcando el norte magnético."
+    },
+    {
+        "term": "Budismo",
+        "definition": "Religión creada por Sidartha Gautama \"Buda\" en el siglo v a.C. que cuenta con numerosas escuelas y manifestaciones. Su fin es erradicar el sufrimiento mediante la anulación del deseo. Wide VTinsrisrmsñs ssl — dá mea tara RA o 1382 hasta 1517. Su nombre proviene de bury=torre, pues tenían sus cuarteles en la fortaleza de El Cairo."
+    },
+    {
+        "term": "Busca",
+        "definition": "Asociación política barcelonesa de tendencia democrática, de mediados del siglo XIV, compuesta por mercaderes y pequeños propietarios."
+    },
+    {
+        "term": "Buscaire",
+        "definition": "Persona perteneciente a la Busca."
+    },
+    {
+        "term": "Caballería",
+        "definition": "Institución a la que pertenecen los nobles tanto de primer como de segundo rango."
+    },
+    {
+        "term": "Caballeros",
+        "definition": "Los que van a caballo. Nobleza de segunda categoría."
+    },
+    {
+        "term": "Caballeros villanos",
+        "definition": "En España, pequeña nobleza rural capaz de mantener un caballo."
+    },
+    {
+        "term": "Cadí",
+        "definition": "Mus. Juez musulmán."
+    },
+    {
+        "term": "Caid",
+        "definition": "Mus. Jefe militar."
+    },
+    {
+        "term": "Calamita",
+        "definition": "Imán: Brújula. Mineral que sirve para imantar y atraer el hierro."
+    },
+    {
+        "term": "Calendario gregoriano",
+        "definition": "Nuestro actual calendario. En 1582 el papa Gregorio XIII eliminó el desfase de 10 días del calendario juliano."
+    },
+    {
+        "term": "Califa",
+        "definition": "Mus. Título de los sucesores de Mahoma. Eran a la vez jefes religiosos y políticos."
+    },
+    {
+        "term": "Cámara Apostólica",
+        "definition": "Departamento de la Santa Sede encargado de las finanzas."
+    },
+    {
+        "term": "Cámara de cuentas",
+        "definition": "Organismo real donde se llevaba la contabilidad del reino."
+    },
+    {
+        "term": "Cámara estrellada",
+        "definition": "Tribunal real de últiA a q BP > O A IIA emperadores al Imperio Bizantino."
+    },
+    {
+        "term": "Canto Ambrosiano",
+        "definition": "Canto litúrgico de la diócesis de Milán atribuido san Ambrosio (siglo IV). Estuvo vigente hasta la reforma musical de San Gregorio Magno."
+    },
+    {
+        "term": "Canto galicano",
+        "definition": "Canto monódico propio de la liturgia francesa procedente de época merovingia y carolingia."
+    },
+    {
+        "term": "Canto gregoriano",
+        "definition": "Canto litúrgico de la Iglesia romana atribuido al papa Gregorio Magno."
+    },
+    {
+        "term": "Canto milanés",
+        "definition": "Canto Ambrosiano."
+    },
+    {
+        "term": "Canto mozárabe",
+        "definition": "Canto monódico propio de la liturgia hispana o visigótica vigente en Castilla hasta 1080 cuando fue sustituido por el canto gregoriano. Actualmente se interpreta en las catedrales de Toledo, Córdoba y Salamanca."
+    },
+    {
+        "term": "Cantón",
+        "definition": "Cada una de las grandes circunscripciones que integran la Federación Suiza."
+    },
+    {
+        "term": "Capellanía",
+        "definition": "Fundación atendida por uno o varios sacerdotes, que viven de rentas, que rezan por las intenciones del fundador."
+    },
+    {
+        "term": "Capeto",
+        "definition": "Dinastía real francesa (987-1327). Toma su nombre de la capa abacial que usaba Hugo el Grande."
+    },
+    {
+        "term": "Capilla",
+        "definition": "Oratorio privado. En época carolingia fue el germen de la administración real."
+    },
+    {
+        "term": "Capitación",
+        "definition": "Impuesto de carácter personal."
+    },
+    {
+        "term": "Carabela",
+        "definition": "Barco de vela inventado por los portugueses, con tres mástiles, apto para navegar por el océano."
+    },
+    {
+        "term": "Caravasar",
+        "definition": "Mus. Albergues, normalmente fortificados, situados en las rutas principales para el descanso de comerciantes y vDereorinos. do."
+    },
+    {
+        "term": "Cátaros",
+        "definition": "Puros. Herejes del sur de Francia (siglo xI1) con reminiscencias gnósticas y maniqueas."
+    },
+    {
+        "term": "Catastro",
+        "definition": "Censo o relación del conjunto de fincas urbanas o rústicas para fijar los impuestos. El primero fue realizado por Guillermo el Conquistador en 1086."
+    },
+    {
+        "term": "Catay",
+        "definition": "Nombre con el que se conoce a China desde el relato de Marco Polo. Su nombre deriva de Kitán."
+    },
+    {
+        "term": "Católico",
+        "definition": "Universal. Título que usa la Iglesia romana opuesto a ortodoxo."
+    },
+    {
+        "term": "Catepán",
+        "definition": "Biz. Comandante de un thema fronterizo."
+    },
+    {
+        "term": "Catepanato",
+        "definition": "Biz. Territorio administrado por un catepán."
+    },
+    {
+        "term": "Cavalgada",
+        "definition": "Expedición a caballo en territorio enemigo."
+    },
+    {
+        "term": "Ceca",
+        "definition": "Lugar en el que se acuña moneda."
+    },
+    {
+        "term": "Celotas",
+        "definition": "Biz. Partidarios de posturas intransigentes, apoyados por los monjes de Athos, frente a los latinos. Participaban en las revueltas urbanas."
+    },
+    {
+        "term": "Cenobio",
+        "definition": "Monasterio. Vida en común. Edificio donde viven los cenobitas."
+    },
+    {
+        "term": "Cenobita",
+        "definition": "Monje. Persona que vive en comunidad bajo una regla común."
+    },
+    {
+        "term": "Chamán; Chamanista",
+        "definition": "Persona que practica el chamanismo."
+    },
+    {
+        "term": "Chamanismo",
+        "definition": "Creencias y prácticas religiosas relacionadas con el mundo de los espíritus de los antepasados a los que se rinde culto."
+    },
+    {
+        "term": "Chambelán",
+        "definition": "Mus. Jefe de la administración."
+    },
+    {
+        "term": "Charistiké",
+        "definition": "Biz. Institución por la que un laico nrotesía un monasterio v vivía de"
+    },
+    {
+        "term": "Cmita",
+        "definition": "Mus, Musulman adscrito al cntis mo."
+    },
+    {
+        "term": "Chin; Jin; Jurchen",
+        "definition": "Dinastía de orige manchú que gobernó en el norte d China, tras derrocar a los Liao, desd 1115 hasta 1234 en que fue derrotada po los mongoles."
+    },
+    {
+        "term": "Chizia",
+        "definition": "Mus. Yizya."
+    },
+    {
+        "term": "Chrisobula",
+        "definition": "Biz. Bula de oro. Llamada as por llevar pendiente un sello de oro."
+    },
+    {
+        "term": "Chrysargyrion",
+        "definition": "Biz. Impuesto bizantin que pagaban los mercaderes e industria les."
+    },
+    {
+        "term": "Ciompi",
+        "definition": "Nombre que se daba en Florenci"
+    },
+    {
+        "term": "a los cardadores de lana y por extensió",
+        "definition": "a los que ocupaban los estratos más bajo de la sociedad."
+    },
+    {
+        "term": "Circasiano",
+        "definition": "Mus. Individuo caucásic natural de Circasia. región situada entr los mares Negro y Azov. Ver buryíes."
+    },
+    {
+        "term": "Cirílico",
+        "definition": "Alfabeto inventado en el siglo :"
+    },
+    {
+        "term": "para evangelizar a los eslavos y aú",
+        "definition": "usado en la actualidad."
+    },
+    {
+        "term": "Citramontanos",
+        "definition": "De esta parte de los mon tes."
+    },
+    {
+        "term": "Ciudad Eterna",
+        "definition": "Roma."
+    },
+    {
+        "term": "Ciutadans honrats",
+        "definition": "Ciudadanos honrado: Clase social compuesta por grandes bu gueses que en Cataluña controlaba e poder municipal."
+    },
+    {
+        "term": "Cives",
+        "definition": "Ciudadanos. Nombre con el que s designa al patriciado urbano."
+    },
+    {
+        "term": "Civitas",
+        "definition": "Ciudad. Ciudad amurallada de ori gen romano convertida en centro admi nistrativo."
+    },
+    {
+        "term": "Clarisas",
+        "definition": "Orden femenina franciscana fun dada por Santa Clara y San Francisco d oo A A lento y panzudo movido a vela propio de los mares norteños."
+    },
+    {
+        "term": "Codaste",
+        "definition": "Pieza de madera vertical a la quilla, situada a popa o a un lado del barco, donde se fija el timón."
+    },
+    {
+        "term": "Codex",
+        "definition": "Códice. Libro escrito a mano anterior a la invención de la imprenta."
+    },
+    {
+        "term": "Cofa",
+        "definition": "Especie de asiento o cesto de madera situado en lo alto de un mástil."
+    },
+    {
+        "term": "Cofrade",
+        "definition": "Miembro de una cofradía."
+    },
+    {
+        "term": "Cofradía",
+        "definition": "Asociación de fieles que se acogen bajo la advocación de un santo y realizan prácticas en común (procesiones, ayuda, entierros...). Existen también en el Islam."
+    },
+    {
+        "term": "Cofradía militar",
+        "definition": "Agrupación de caballeros guiados por su espíritu religioso, antecesora de las Ordenes Militares."
+    },
+    {
+        "term": "Colación",
+        "definition": "Territorio perteneciente a una parroquia."
+    },
+    {
+        "term": "Colegio",
+        "definition": "Edificio o institución de fundación laica o eclesiástica en el que viven estudiantes universitarios."
+    },
+    {
+        "term": "College",
+        "definition": "Institución universitaria típicamente inglesa. Ver colegio."
+    },
+    {
+        "term": "Columnas de Hércules",
+        "definition": "Míticas columnas que simbolizaban el final del mundo civilizado griego, situadas en el Estrecho de Gibraltar. Desde Carlos 1 de Habsburgo figuran en el escudo de España con el lema Plus Ultra (Más allá)."
+    },
+    {
+        "term": "Códice",
+        "definition": "Todo libro anterior a la invención de la imprenta."
+    },
+    {
+        "term": "Commanda",
+        "definition": "Contrato comercial por el que una persona (comandatario) entrega dinero a otra (comerciante) para que realice un determinado negocio. E ii AA EA NS A E A IA SS AS y se aceptaron algunas de sus propuestas."
+    },
+    {
+        "term": "Compañía",
+        "definition": "Asociación comercial en la que participan varios socios repartiéndose las pérdidas y ganancias de manera proporcional al capital aportado."
+    },
+    {
+        "term": "Compto",
+        "definition": "Establecimiento dedicado al depósito y compraventa de mercancías."
+    },
+    {
+        "term": "Común",
+        "definition": "En la Baja Edad Media designaba a los habitantes de la ciudad que no participaban en el control de los municipios."
+    },
+    {
+        "term": "Comuna",
+        "definition": "Nombre que se da en Italia a la primera fase del régimen municipal urbano."
+    },
+    {
+        "term": "Concilio",
+        "definition": "Reunión de obispos con carácter"
+    },
+    {
+        "term": "deliberativo. Podían ser",
+        "definition": "ecuménicos o universales, nacionales y provinciales."
+    },
+    {
+        "term": "Conciliarista",
+        "definition": "Referido o perteneciente a la teoría conciliar."
+    },
+    {
+        "term": "Concordato",
+        "definition": "Acuerdo escrito entre un Estado y la Santa Sede en el que se regulan las relaciones mutuas."
+    },
+    {
+        "term": "Concubinato",
+        "definition": "Relación marital entre un clérigo y una mujer."
+    },
+    {
+        "term": "Conde",
+        "definition": "Funcionario real. Miembro de la comitiva regia. Sus funciones podían ser muy variadas."
+    },
+    {
+        "term": "Condestable",
+        "definition": "Cargo honorífico atribuido a un gran noble. En su origen era el encargado de los establos reales."
+    },
+    {
+        "term": "Condominio",
+        "definition": "Dominio sobre algo o alguien que se ejerce por dos o más señores."
+    },
+    {
+        "term": "Condotiero",
+        "definition": "Jefe de una compañía mercenaria que alquilaba sus tropas al mejor postor. Fueron muy numerosos en la Ttalia del siglo xv. Muchos eran nobles de segundo rango. cita le WR! no poi Y MVVICS QUE 4SESUIavalid al 14 y."
+    },
+    {
+        "term": "Consilium",
+        "definition": "Consejo. Deber del vasallo de acudir a la llamada de su señor para asesorarle."
+    },
+    {
+        "term": "Constitutum Constantini",
+        "definition": "Donación de Constantino."
+    },
+    {
+        "term": "Consuetudinario",
+        "definition": "De costumbre. Por costumbre."
+    },
+    {
+        "term": "Cónsul",
+        "definition": "Nombre de dos magistrados romanos. Persona que preside un tribunal de comercio."
+    },
+    {
+        "term": "Contado",
+        "definition": "Territorio sometido al régimen jurisdiccional de una ciudad-estado italiana."
+    },
+    {
+        "term": "Contralisios",
+        "definition": "Vientos casi constantes que en altura soplan del ecuador hacia los trópicos, en el sentido de las agujas del reloj, en el hemisferio norte y, al contrario en el hemisferio sur."
+    },
+    {
+        "term": "Convento",
+        "definition": "Edificio religioso situado en un medio urbano donde viven en comunidad frailes o monjas."
+    },
+    {
+        "term": "Conventuales",
+        "definition": "Congregación franciscana que sigue el ideario de San Francisco de Asís y practica una pobreza mitigada."
+    },
+    {
+        "term": "Copto",
+        "definition": "Mus. Nombre que designa a los cristianos de Egipto y Etiopía. Tienen su lengua y liturgia propias. Existe una Iglesia Católica Copta y una Iglesia Ortodoxa Copta."
+    },
+    {
+        "term": "Corpus",
+        "definition": "Cuerpo. Conjunto."
+    },
+    {
+        "term": "Corpus Christi",
+        "definition": "Cuerpo de Cristo."
+    },
+    {
+        "term": "Corregidor",
+        "definition": "Representante real en los municipios castellanos."
+    },
+    {
+        "term": "Corso",
+        "definition": "Pirata que actúa con la protección financiera o política de un Estado."
+    },
+    {
+        "term": "Cortes",
+        "definition": "Institución representativa compuesta por nobles, eclesiásticos y represeats de ls srta ass 4 Lis anos en 105 que se nan producido 10s hechos históricos."
+    },
+    {
+        "term": "Cruzada",
+        "definition": "Expedición religioso-militar para la conquista de Tierra Santa."
+    },
+    {
+        "term": "Cruzada oficial",
+        "definition": "La dirigida por un representante del Papa o la encabezada por reyes."
+    },
+    {
+        "term": "Cuadrante",
+        "definition": "Instrumento que servía para determinar la altura de los astros respecto al horizonte y que indicaba la latitud. Cuarta parte del círculo. Cada una de las Cuatro partes de la rosa de los vientos y mide 45%."
+    },
+    {
+        "term": "Cumanos",
+        "definition": "Pueblo de origen turco que invadió el sur de Europa en el siglo XI."
+    },
+    {
+        "term": "Cura animarum",
+        "definition": "Cuidado de las almas."
+    },
+    {
+        "term": "Curia",
+        "definition": "Conjunto de organismos que integran el gobierno central de la Iglesia. Actualmente se llaman dicasterios y equivalen a ministerios."
+    },
+    {
+        "term": "Dar al-Islam",
+        "definition": "Mus. Tierras del islam. Conjunto de países habitados por musulmanes."
+    },
+    {
+        "term": "Dari",
+        "definition": "Zona de influencia persa donde predominaba una lengua y cultura popular. Opuesto a Pahlavi."
+    },
+    {
+        "term": "Debe",
+        "definition": "En la práctica contable columna de la izquierda en la que se anota el activo de una empresa (ingresos, patrimonio, etc.)."
+    },
+    {
+        "term": "Décima",
+        "definition": "Diezmo. Impuesto de naturaleza muy variable."
+    },
+    {
+        "term": "Declinación magnética",
+        "definition": "Es el ángulo que existe entre el norte magnético y el norte"
+    },
+    {
+        "term": "Dei gratia",
+        "definition": "Por la gracia de Dios. Fórmula usada por los monarcas para indicar que su poder venía de Dios y no de los hombres."
+    },
+    {
+        "term": "De iure",
+        "definition": "De Derecho. Legalmente."
+    },
+    {
+        "term": "Deme",
+        "definition": "Biz. Asamblea."
+    },
+    {
+        "term": "Demosiarios",
+        "definition": "Biz. Campesinos que trabajaban en las tierras sujetas a la pronoia."
+    },
+    {
+        "term": "Deriva",
+        "definition": "Desviación de la ruta de una nave, respecto a su dirección correcta, por la acción del viento y las corrientes marinas."
+    },
+    {
+        "term": "Derrota",
+        "definition": "Es la distancia que ha recorrido una nave desde un punto a otro."
+    },
+    {
+        "term": "Derviche",
+        "definition": "Mus. Miembro de una secta musulmana turca que practica el ascetismo y la mendicidad."
+    },
+    {
+        "term": "Despoina",
+        "definition": "Biz. Señora. Título de algunas emperatrices bizantinas."
+    },
+    {
+        "term": "Despotado",
+        "definition": "Biz. Territorio semiautónomo bajo el gobierno de un despotés. Se concedía a los miembros de una dinastía o a nobles importantes."
+    },
+    {
+        "term": "Despotés",
+        "definition": "Biz. Señor. Título utilizado por algunos emperadores bizantinos."
+    },
+    {
+        "term": "Deuteron",
+        "definition": "Biz. Moneda bizantina hecha con una aleación de oro y plata."
+    },
+    {
+        "term": "Devotio moderna",
+        "definition": "Movimiento religioso que durante el siglo XV propugnaba nuevas formas de piedad alejadas de la práctica mecánica de la religión."
+    },
+    {
+        "term": "Devsirme",
+        "definition": "Mus. Sistema de leva forzosa de niños cristianos organizada por los turcos para servir en la administración o el ejército."
+    },
+    {
+        "term": "Dictatus papae",
+        "definition": "Dictado papal. Conjunto de 27 enunciados que recogen el pensadia. a as E ra rl Edi ió"
+    },
+    {
+        "term": "Dimmíes",
+        "definition": "Mus. Gentes del Libro. Nombre dado a los cristianos, judíos y zoroastras."
+    },
+    {
+        "term": "Dinar",
+        "definition": "Mus. Moneda de oro musulmana acuñada a imitación del sueldo bizantino."
+    },
+    {
+        "term": "Diócesis",
+        "definition": "Territorio en el que el obispo ejerCe Su Cargo."
+    },
+    {
+        "term": "Diplomática",
+        "definition": "Ciencia que estudia los diplomas y otros documentos oficiales."
+    },
+    {
+        "term": "Disputatio",
+        "definition": "Discusión y argumentación que se utilizaba en el método escolástico."
+    },
+    {
+        "term": "Divan o Diwan",
+        "definition": "Mus. Especie de ministerio al frente del cual había un visir."
+    },
+    {
+        "term": "Divisa",
+        "definition": "Lema o conjunto de palabras que expresan una idea. Señal exterior que identifica a las personas pertenecientes a un mismo grupo."
+    },
+    {
+        "term": "Doctor",
+        "definition": "Máximo título académico que confieren las Universidades y que habilita para el magisterio universitario."
+    },
+    {
+        "term": "Doctor angelicus",
+        "definition": "Doctor angélico. Apelativo que se da a Santo Tomás de Aquino por la perfección intelectual alcanzada en sus Summas."
+    },
+    {
+        "term": "Doctor subtilis",
+        "definition": "Doctor sutil. Apelativo dado a Juan Duns Scoto por la finura y sutileza de sus argumentos."
+    },
+    {
+        "term": "Dogo",
+        "definition": "Dux. Título utilizado por el máximo representante de Venecia hasta el siglo XVIIL"
+    },
+    {
+        "term": "Dominium mundi",
+        "definition": "Dominio del mundo. Expresión que sintetiza la lucha entre el Papado y el Imperio durante la Edad Media."
+    },
+    {
+        "term": "Dominus noster",
+        "definition": "Nuestro señor."
+    },
+    {
+        "term": "Donación de Constantino",
+        "definition": "Documento elaborado en la cancillería pontificia en el siglo vI, cuya falsedad demostró l nrenza Valla en 1440 DUcacO. ICILHOMO UE Zlal CALCILSIOL gobernado por un duque. Moneda de orc veneciana de 3,5 gr."
+    },
+    {
+        "term": "Ducas",
+        "definition": "Biz. Dinastía y familia bizantin: que ocupó el trono en varias ocasiones y. tras la caída de Constantinopla (1204), creó el Despotado de Epiro, donde reiné hasta 1318."
+    },
+    {
+        "term": "Duque",
+        "definition": "Persona que ostenta el más altc grado de la nobleza."
+    },
+    {
+        "term": "Dux",
+        "definition": "General. Dogo."
+    },
+    {
+        "term": "Ealdormen",
+        "definition": "Jefe provincial situado al frente de un shire cuyas funciones fueron asumidas por el sheriff."
+    },
+    {
+        "term": "Eclesiología",
+        "definition": "Ciencia que estudia el pape! de la Iglesia en la sociedad."
+    },
+    {
+        "term": "Elches",
+        "definition": "Mus. Mercenarios cristianos que servían en el ejército nazarí."
+    },
+    {
+        "term": "Emir",
+        "definition": "Mus. Príncipe. Título que significa \"el que manda\"."
+    },
+    {
+        "term": "Emir al-Muminin",
+        "definition": "Mus. Príncipe de los creyentes."
+    },
+    {
+        "term": "Emir al-Muslimin",
+        "definition": "Mus. Príncipe de los musulmanes."
+    },
+    {
+        "term": "Emirato",
+        "definition": "Mus. Territorio bajo el control de un emir."
+    },
+    {
+        "term": "Encomienda",
+        "definition": "Territorio de una orden militar bajo el mando de un comendador."
+    },
+    {
+        "term": "Enfiteusis",
+        "definition": "Biz. Domino útil sobre una tierra a cambio del pago de un censo."
+    },
+    {
+        "term": "Enfiteuta",
+        "definition": "Persona que posee el dominio útil de una tierra a cambio de un censo."
+    },
+    {
+        "term": "Eparca",
+        "definition": "Biz. Gobernador de una provincia. Prefecto de Constantinopla. Título episRO E A. ARAN"
+    },
+    {
+        "term": "Escheator",
+        "definition": "Persona encargada de admini: trar los bienes reales en los distintos cox dados."
+    },
+    {
+        "term": "Escolástica",
+        "definition": "Movimiento o corriente fil sófica-teológica medieval que utilizó «"
+    },
+    {
+        "term": "pensamiento grecolatino para explicar l",
+        "definition": "verdades reveladas del cristianismo. S"
+    },
+    {
+        "term": "principal representante fue santo Tom",
+        "definition": "de Aquino."
+    },
+    {
+        "term": "Escotistas",
+        "definition": "Seguidores de las doctrinas ( Juan Duns Scoto."
+    },
+    {
+        "term": "Escutage",
+        "definition": "Impuesto que se pagaba pa evitar el servicio de armas."
+    },
+    {
+        "term": "Eslavos",
+        "definition": "Pueblos situados tras el Danubi y los Cárpatos que entraron en Europa e los siglos V y VI. Occidentales (checo polacos, croatas). orientales (rusos ucranianos) y meridionales (sérbios eslovacos)."
+    },
+    {
+        "term": "Espirituales",
+        "definition": "Rama rigorista y heterodox de los franciscanos que denunciaba | riqueza de la Iglesia y propugnaba un pobreza radical. Fueron capitaneados pc"
+    },
+    {
+        "term": "Miguel de Cesena y Hubertino de Cas",
+        "definition": "le."
+    },
+    {
+        "term": "Estagirita",
+        "definition": "Natural de Estagira, ciudad de norte de Grecia. Nombre que se da Aristóteles por haber nacido allí en « siglo IV a.C."
+    },
+    {
+        "term": "Estados",
+        "definition": "Cada una de las partes en las qu se divide la sociedad en la Baja Eda Media."
+    },
+    {
+        "term": "Estados Generales",
+        "definition": "Institución represent: tiva francesa compuesta por el alto cler« la nobleza y el tercer estado. Parlament"
+    },
+    {
+        "term": "Estanflación",
+        "definition": "Situación de crisis o recesió que se produce cuando, de manera simu tánea, hay un alza de los precios, u aumenta del desemnlen v un estanes BEE A AA A A A MA"
+    },
+    {
+        "term": "¿tnología",
+        "definition": "Ciencia que estudia las costumbres y tradiciones de los pueblos."
+    },
+    {
+        "term": "¿unuco",
+        "definition": "Biz. Casirado. En las cortes de Bizancio y Bagdad ocuparon altos cargos."
+    },
+    {
+        "term": "¿vreux",
+        "definition": "Familia condal francesa, rama menor de los Capeto, que reinó en Navarra desde 1328 hasta 1425."
+    },
+    {
+        "term": "Exchequer",
+        "definition": "Nombre que se da en Inglaterra a la Hacienda Real. Fue instaurado por Enrique II Plantagenet. Toma su nombre de una mesa alargada y ajedrezada de 3 por 1,5 metros en la que se colocaba el dinero para su contabilidad."
+    },
+    {
+        "term": "Excomunión",
+        "definition": "Máxima pena espiritual de la Iglesia cristiana por la que se excluía a los fieles de los sacramentos."
+    },
+    {
+        "term": "7x novo",
+        "definition": "Desde el comienzo. De nuevo."
+    },
+    {
+        "term": "¿xogamia",
+        "definition": "Norma u obligación de casarse con personas de distinta tribu o pueblo."
+    },
+    {
+        "term": "¿xorcismo",
+        "definition": "Práctica religiosa, común a muchas religiones, tendente a la expulsión de los demonios o espíritus malignos apoderados del cuerpo humano."
+    },
+    {
+        "term": "¿xtasis",
+        "definition": "Estado de arrobamiento máximo, de carácter místico, en el que se logra la unión con la Divinidad."
+    },
+    {
+        "term": "\"actor",
+        "definition": "Representante de una compañía en una ciudad o puerto."
+    },
+    {
+        "term": "'actoría",
+        "definition": "Establecimiento o lugar destinado a la actividad comercial, normalmente situado en un país distante."
+    },
+    {
+        "term": "\"amiliar",
+        "definition": "Personas próximas a las Órdenes Militares o a la Inquisición. ón o, a los ortodoxos, para significar que el Espíritu Santo procede del Padre y del Hijo."
+    },
+    {
+        "term": "Filosofía",
+        "definition": "Amor per la sabiduría. Ciencia que estudia los problemas fundamentales del hombre a través de la razón."
+    },
+    {
+        "term": "Finés",
+        "definition": "Finlandés."
+    },
+    {
+        "term": "Figh",
+        "definition": "Mus. Ciencia que cultiva el Derecho musulmán."
+    },
+    {
+        "term": "Florilegios",
+        "definition": "Antología o repertorio de pensamientos o frases."
+    },
+    {
+        "term": "Florín",
+        "definition": "Moneda de oro de Florencia (1252) de 3,5 gr. a imitación del sueldo bizantino y del dinar."
+    },
+    {
+        "term": "Foix",
+        "definition": "Casa condal francesa que reinó en Navarra de 1479 a 1516."
+    },
+    {
+        "term": "Fondac. Fondaco. Fonduq",
+        "definition": "Mus. Almacén o depósito de mercancías en los puertos musulmanes frecuentados por europeos."
+    },
+    {
+        "term": "Fraile",
+        "definition": "De frater (Hermano). Se aplica a los miembros de las órdenes mendicantes. Religioso sometido a una regla que vive en un convento y puede salir del mismo a diferencia del que vive en un monasterio sometido al abad."
+    },
+    {
+        "term": "Fraile mendicante",
+        "definition": "Fraile que vive de la caridad."
+    },
+    {
+        "term": "Frater",
+        "definition": "Hermano. Fraile. Nombre que se da a los miembros de las Ordenes Mendicantes."
+    },
+    {
+        "term": "Fratricelli",
+        "definition": "Secta rigorista desgajada de la familia franciscana condenada por la Iglesia."
+    },
+    {
+        "term": "Gabela",
+        "definition": "Tasa que se imponía en Francia sobre la venta de la sal. Tasas."
+    },
+    {
+        "term": "Genocidio",
+        "definition": "Exterminio planificado de una raza o pueblo."
+    },
+    {
+        "term": "Gentry",
+        "definition": "Miembros de la pequeña nobleza inglesa o grandes propietarios."
+    },
+    {
+        "term": "Geocentrismo",
+        "definition": "Doctrina política en la que Dios es el centro de todas las cosas."
+    },
+    {
+        "term": "Georgoi",
+        "definition": "Biz. Colonos dependientes y adscritos a la tierra que cultivaban."
+    },
+    {
+        "term": "Germánicos",
+        "definition": "Nombre dado por los romanos a una serie de pueblos que habitaban tras la frontera del Rin (francos, godos, suevos, burgundios, lombardos, etc.)."
+    },
+    {
+        "term": "Gibelinos",
+        "definition": "Partidarios del emperador germánico y del poder imperial frente al Papado. Toma su nombre del castillo de Waiblingen. Las almenas de sus castillos tenían forma de cola de golondrina."
+    },
+    {
+        "term": "Giróvago",
+        "definition": "Monje itinerante y no adscrito a ningún monasterio. La Regla benedictina puso fin a esta práctica en Occidente."
+    },
+    {
+        "term": "Glagolítico",
+        "definition": "Primer alfabeto eslavo creado por san Cirilo y san Metodio para evangelizarlos."
+    },
+    {
+        "term": "Glosa",
+        "definition": "Nota que se escribía sobre una palabra para aclarar su significado."
+    },
+    {
+        "term": "Glosadores",
+        "definition": "Juristas boloñeses del siglo x1 expertos en Derecho Romano. Irnerio. Accursio, etc."
+    },
+    {
+        "term": "Gnosticismo",
+        "definition": "Doctrina y herejía sincretista basada en el conocimiento y sólo apta para iniciados."
+    },
+    {
+        "term": "Gog",
+        "definition": "Figura literaria que en la Edad Media personificaba el mal y las tinieblas. Se la situaba más allá del Cáucaso."
+    },
+    {
+        "term": "Gonfalón",
+        "definition": "Estandarte."
+    },
+    {
+        "term": "Gonfalonero de Justicia",
+        "definition": "Nombre que se daba en Florencia al defensor de los intereces del nuehla frente a la clace dami-"
+    },
+    {
+        "term": "Gran Maestre",
+        "definition": "Máxima autoridad de un Orden Militar."
+    },
+    {
+        "term": "Grande rifiuto",
+        "definition": "Gran rechazo. Térmir"
+    },
+    {
+        "term": "otorgado por Dante a la renuncia al Pap",
+        "definition": "do por parte de Celestino V."
+    },
+    {
+        "term": "Gran visir",
+        "definition": "Mus. Especie de primer mini tro. Personaje turco en quien el sulté delegaba el gobierno."
+    },
+    {
+        "term": "Gran yasa",
+        "definition": "Código de leyes básicas di Imperio mongol."
+    },
+    {
+        "term": "Gremio",
+        "definition": "Corporación medieval ciudadar"
+    },
+    {
+        "term": "integrada por maestros, oficiales y apre",
+        "definition": "dices, dedicada a una actividad concre y regida por sus estatutos."
+    },
+    {
+        "term": "Griego",
+        "definition": "Oriental. Mercader. Bizantin: Ortodoxo."
+    },
+    {
+        "term": "Guanches",
+        "definition": "Primitivos habitantes de |: Islas Canarias de origen bereber."
+    },
+    {
+        "term": "Giielfos",
+        "definition": "Partidarios del Papa y del pod: pontificio. Toman su nombre de Welfo I de Baviera esposo de la condesa Matilc de Toscana. Las almenas de sus castillc eran rectangulares."
+    },
+    {
+        "term": "Guildas",
+        "definition": "Asociaciones de los comerciante de la Europa centro-nórdica para defensa de sus intereses."
+    },
+    {
+        "term": "Gur Khan",
+        "definition": "Título que se daba a los sob: ranos entre los kara kitai."
+    },
+    {
+        "term": "Haber",
+        "definition": "En la práctica contable columna c la derecha en la que se anotan las cant dades que se deben, los pagos efectuadc y el dinero inmovilizado."
+    },
+    {
+        "term": "Habices",
+        "definition": "Mus. Bienes inalienables proc"
+    },
+    {
+        "term": "dentes de fundaciones piadosas destin",
+        "definition": "EP, ARA PA E - nó Túnez y parte de Argelia entre 1236 y 1574. Sucedió a la dinastía Zairí."
+    },
+    {
+        "term": "Hagiografía",
+        "definition": "Vida de un santo."
+    },
+    {
+        "term": "Hagiógrafo",
+        "definition": "El que escribe vidas y relatos de santos."
+    },
+    {
+        "term": "Hairesis",
+        "definition": "Biz. Elección. Herejía."
+    },
+    {
+        "term": "Hafsíes",
+        "definition": "Mus. Dinastía bereber que gobernó en Túnez de 1229 hasta 1505."
+    },
+    {
+        "term": "Hanafí",
+        "definition": "Mus. Una de las cuatro escuelas jurídicas del Islam fundada en el siglo XI por Abú Hanifa."
+    },
+    {
+        "term": "Hanbalí",
+        "definition": "Mus. Una de las cuatro escuelas jurídicas del Islam, fundada por Ahmad ben Hanbal. Siglo IX."
+    },
+    {
+        "term": "Hayib",
+        "definition": "Mus. Chambelán."
+    },
+    {
+        "term": "Hazára",
+        "definition": "Grupo de mil soldados en el ejército mongol."
+    },
+    {
+        "term": "Heftalitas",
+        "definition": "Rama de los hunos, llamados también \"Blancos\", aniquilada por Cosroes 1 en 557."
+    },
+    {
+        "term": "Hégira",
+        "definition": "Mus. Migración. Traslado de Mahoma y sus compañeros de La Meca a Yatrib (Medina) en 622. Marca el inicio del calendario musulmán que es lunar y tiene 354 días, 8 horas y 38 minutos."
+    },
+    {
+        "term": "Heráldica",
+        "definition": "Ciencia que estudia los apellidos y escudos de armas de las familias."
+    },
+    {
+        "term": "Herejía",
+        "definition": "Biz. Doctrina contraria a un determinado dogma. Se la considera delito de Estado."
+    },
+    {
+        "term": "Heresiarca",
+        "definition": "Biz. Hereje de gran relevancia."
+    },
+    {
+        "term": "Hesicasmo o Hesiquía",
+        "definition": "Biz. De hesykia, tranquilidad, quietud, silencio. Práctica religiosa de carácter místico practicada por los monjes de Athos opuestos a la unión con Roma."
+    },
+    {
+        "term": "Hesicastas",
+        "definition": "Biz. Monjes practicantes de la hesiquía. A q á- AXE EEES EUA A AA ASA An sermón al que se arrojaban los objetos (libros, vestimentas, muebles) considerados perniciosos o superfluos para el espíritu."
+    },
+    {
+        "term": "Hohenstaufen",
+        "definition": "Familia y dinastía imperial alemana que luchó contra el Papado por el Dominium mundi."
+    },
+    {
+        "term": "Homo viator",
+        "definition": "Hombre viajero."
+    },
+    {
+        "term": "Honor Imperii",
+        "definition": "Honor del Imperio. Reivindicado por los emperadores alemanes frente al Papado."
+    },
+    {
+        "term": "Horda",
+        "definition": "Palabra turcómana que significa campamento."
+    },
+    {
+        "term": "Horda Azul",
+        "definition": "Nombre dado a las tierras de la parte oriental de la Horda de Oro."
+    },
+    {
+        "term": "Horda Blanca",
+        "definition": "Nombre dado a las tierras de la parte occidental de la Horda de Oro."
+    },
+    {
+        "term": "Horda de Oro",
+        "definition": "Llamada también Kanato de Kipchak, situado al sur de Rusia entre los mares Negro, Caspio y Aral. Su capital era Saray, sobre el Volga. Su nombre deriva del color dorado de la tienda de Batú, su fundador."
+    },
+    {
+        "term": "Horologium aeternae sapientiae",
+        "definition": "Reloj de la eterna sabiduría."
+    },
+    {
+        "term": "Horror vacui",
+        "definition": "Horror al vacío. Significa que cuando desaparece el poder, inmediatamente surge otro para ocupar su lugar."
+    },
+    {
+        "term": "Humanismo",
+        "definition": "Movimiento cultural europeo del siglo Xv en el que el hombre pasa a ser el centro y la medida de todas las cosas, a diferencia del teocentrismo en el que Dios ocupaba ese lugar."
+    },
+    {
+        "term": "Humiliati",
+        "definition": "Movimiento religioso heterodoxo surgido en el siglo XII en el norte de Italia con ideas próximas a las de los valdenses. El papa Lucio III les prohibió la a E id 8"
+    },
+    {
+        "term": "Ibn",
+        "definition": "Hijo de."
+    },
+    {
+        "term": "Icono",
+        "definition": "Biz. Imagen."
+    },
+    {
+        "term": "Iconoclasta",
+        "definition": "Biz. Opuesto a la veneración de imágenes."
+    },
+    {
+        "term": "Iconodulia",
+        "definition": "Biz. Culto a las imágenes."
+    },
+    {
+        "term": "Iconódulo",
+        "definition": "Biz. Venerador de imágenes."
+    },
+    {
+        "term": "Idolatría",
+        "definition": "Adoración de iconos o imágenes. Práctica condenada en la Biblia."
+    },
+    {
+        "term": "Ifriqiya",
+        "definition": "Mus. Territorios del actual Túnez y una parte de Argelia."
+    },
+    {
+        "term": "llkanes; Iljanes",
+        "definition": "Mus. Dinastía mongola que gobernó en Irán, Irak y parte del Próximo Oriente de 1256 a 1335."
+    },
+    {
+        "term": "lkanato",
+        "definition": "Mus. Uno de los cuatro kanatos en los que se dividió el imperio mongol tras la muerte de Gengis Khan (1226). Abarcaba los territorios de los actuales Irán, Irak y Afganistán."
+    },
+    {
+        "term": "Illuminati",
+        "definition": "luminados. Grupo de heterodoxos con ideas próximas a las de los valdenses."
+    },
+    {
+        "term": "Imán",
+        "definition": "Mus. El que está delante. Persona que preside el rezo en una mezquita."
+    },
+    {
+        "term": "Imán Justo",
+        "definition": "Mus. Mahdí."
+    },
+    {
+        "term": "Incunable",
+        "definition": "Todo libro impreso desde la invención de la imprenta hasta los primeros años del siglo XVI."
+    },
+    {
+        "term": "Inflación",
+        "definition": "Elevación de los precios ante el aumento de la demanda."
+    },
+    {
+        "term": "Inmune",
+        "definition": "Territorio exento del control real en el que el señor ejerce todas las prerrogativas."
+    },
+    {
+        "term": "Inmunidad",
+        "definition": "Exención de ciertas obligaciones de carácter general (servicio militar, jas e a HONTOSO."
+    },
+    {
+        "term": "In nomine Domini",
+        "definition": "En el nombre del Señor."
+    },
+    {
+        "term": "Inquisición",
+        "definition": "Institución o tribunal creado en 1184 por Lucio III para reprimir la herejía cátara."
+    },
+    {
+        "term": "Inquisidor",
+        "definition": "Persona encargada de descubrir la herejía. Los inquisidores por antonomasia fueron los Dominicos."
+    },
+    {
+        "term": "In situ",
+        "definition": "En el mismo lugar."
+    },
+    {
+        "term": "Igtá",
+        "definition": "Mus. Tierras repartidas entre los combatientes tras su conquista poseídas en usufructo."
+    },
+    {
+        "term": "Islam",
+        "definition": "Mus. Sumisión. Religión monoteísta predicada por Mahoma en el siglo vil."
+    },
+    {
+        "term": "Islam clásico",
+        "definition": "Mus. Periodo del Islam hasta 1258."
+    },
+    {
+        "term": "Islamismo",
+        "definition": "Mus. Conjunto de normas y preceptos de la religión islámica."
+    },
+    {
+        "term": "Islamista",
+        "definition": "Mus. Persona que practica el Islam."
+    },
+    {
+        "term": "Ismailíes",
+        "definition": "Mus. Secta chiíta impregnada de gnosticismo y platonismo que reconoce sólo los siete primeros imanes chiítas. Su actual dirigente es el Aga Khan."
+    },
+    {
+        "term": "Itinerarium fratris Willielmi",
+        "definition": "Itinerario del Hermano Guillermo."
+    },
+    {
+        "term": "Itugen",
+        "definition": "Diosa mongola de la fertilidad."
+    },
+    {
+        "term": "Tus mercatorum",
+        "definition": "Derecho de los mercaderes. Derecho Mercantil."
+    },
+    {
+        "term": "Iwán",
+        "definition": "Mus. Sala abovedada de una madraza en torno a un patio que servía de aula."
+    },
+    {
+        "term": "Jacobitas",
+        "definition": "Melquitas: Partidarios del obispo monofisita Jacobo Baradei, obispo de Edesa (siglo v1). Esta Iglesia está establelA e Via e Y iras ma ore gobernó en Polonia de 1386 a 1572."
+    },
+    {
+        "term": "Jalifat-A llah",
+        "definition": "Mus. Lugarteniente de Alá. Título oficial de los califas."
+    },
+    {
+        "term": "Janes",
+        "definition": "Mus. Alojamientos para los comerciantes."
+    },
+    {
+        "term": "Jangas",
+        "definition": "Mus. Casa u hospedería donde se alojan discípulos entorno a un maestro, especialmente entre los sufíes."
+    },
+    {
+        "term": "Jarach; Jaray",
+        "definition": "Mus. Impuesto pagado por la posesión o disfrute de las tierras. Era mayor el de los dimmíes."
+    },
+    {
+        "term": "Jaristikíon",
+        "definition": "Biz. Concesión de tierras de la lelesia a particulares con carácter revocable."
+    },
+    {
+        "term": "Jariyíes",
+        "definition": "Mus. Los que se han salido. Pensaban que debía ser califa sólo el mejor musulmán."
+    },
+    {
+        "term": "Jenízaros",
+        "definition": "Mus. Tropas de infantería turca reclutadas entre jóvenes cristianos a los que se convertía al Islam."
+    },
+    {
+        "term": "Jeque",
+        "definition": "Mus. Anciano. Sabio. Jefe religioso o político de una tribu o localidad respetado por todos."
+    },
+    {
+        "term": "Jerosolimitano",
+        "definition": "Relativo a Jerusalén."
+    },
+    {
+        "term": "Jin",
+        "definition": "Ver Chin."
+    },
+    {
+        "term": "Jizanat al-Mal",
+        "definition": "Mus. Tesoro del estado."
+    },
+    {
+        "term": "Joaquinitas",
+        "definition": "Franciscanos heterodoxos seguidores de las doctrinas de Joaquín de Fiore (siglo XII)."
+    },
+    {
+        "term": "Judaismo",
+        "definition": "Conjunto de creencia y tradiciones del pueblo judío."
+    },
+    {
+        "term": "Jurchen",
+        "definition": "Ver Chin."
+    },
+    {
+        "term": "Justas",
+        "definition": "Torneos."
+    },
+    {
+        "term": "Juwarizm",
+        "definition": "Territorio centro-asiático situado en la cuenca del Mur Daria, cuyas principales ciudades fueron Bujara y Samarcanda."
+    },
+    {
+        "term": "Lhiwarizmíes",
+        "definition": "Mus Habitantes de hiwaMani Y AMIA, 1VLUS, LLLULO QUE s5se€ UaDva entre los turcos, mongoles y eslavos a la máxima autoridad política. Equivalente a rey."
+    },
+    {
+        "term": "Kanato",
+        "definition": "Mus. Territorio gobernado por un kan."
+    },
+    {
+        "term": "Kapi kullari",
+        "definition": "Mus. Nombre que se daba a los jenízaros destinados al servicio directo y personal del sultán."
+    },
+    {
+        "term": "Kapnikon",
+        "definition": "Biz. Impuesto sobre el fuego u hogar tomado como base de la unidad tributaria."
+    },
+    {
+        "term": "Kara Kitai",
+        "definition": "Grupo étnico de la familia Tangut que dominó parte de Manchuria y norte de China durante la dinastía Liao."
+    },
+    {
+        "term": "Karimíes",
+        "definition": "Grupo de comerciantes que dominaban el comercio del Índico."
+    },
+    {
+        "term": "Karls",
+        "definition": "Nombre que se daba a los campesinos acomodados que tomaron parte en las revueltas flamencas del siglo XIV."
+    },
+    {
+        "term": "Katholikos",
+        "definition": "Biz. Máximo representante de la Iglesia armenia y nestoriana. Título honorífico."
+    },
+    {
+        "term": "Keraitas",
+        "definition": "Mus. Pueblo de raza turco mongola convertido al nestorianismo hacia el 1008 que habitaba en la zona de Ulán Bátor."
+    },
+    {
+        "term": "Khitán; Kitai",
+        "definition": "Nombre genérico del pueblo de raza mongola que gobernó en Manchuria y norte de China en la época de la dinastía Liao."
+    },
+    {
+        "term": "Kipchak; Kanato de Kipchak",
+        "definition": "Nombre por el que también se conoce a la Horda de Oro."
+    },
+    {
+        "term": "Kitán Liao",
+        "definition": "Ver Khitán y Liao."
+    },
+    {
+        "term": "Knight",
+        "definition": "Caballero. Hombre dedicado al ejercicio de las armas y que no posee tieTras. a ti dll que se antepone al nombre. Ejemplo, elHach (el que ha peregrinado a La Meca)."
+    },
+    {
+        "term": "Kuriltay; Kurultay",
+        "definition": "Mus. Magna asamblea de los pueblos turco-mongoles en la que se tomaban los acuerdos más importantes."
+    },
+    {
+        "term": "Lamaísmo",
+        "definition": "Corriente del budismo practicada en Tíbet y entre los pueblos mongoles, que reconocen al Dalai lama como su jefe supremo."
+    },
+    {
+        "term": "Lamaísta",
+        "definition": "Persona que practica el lamaísmo."
+    },
+    {
+        "term": "Lancáster",
+        "definition": "Familia real que gobernó en Inglaterra desde 1399 hasta 1471. Su distintivo era una rosa roja de cinco pétalos."
+    },
+    {
+        "term": "Lanfriede",
+        "definition": "Liga o institución de paz acordada por los habitantes de una región del Imperio Germánico para la defensa mutua."
+    },
+    {
+        "term": "Láscaris",
+        "definition": "Biz. Familia y dinastía imperial que tras la pérdida de Constantinopla (1204) ocupó varias veces el trono de Nicea."
+    },
+    {
+        "term": "Latitud",
+        "definition": "Distancia que hay desde un punto al Ecuador. Puede ser Norte o Sur."
+    },
+    {
+        "term": "Letra de cambio",
+        "definition": "Instrumento financiero para transferir cantidades de un lugar a otro evitando su transporte físico. Solía cobrarse en otra moneda."
+    },
+    {
+        "term": "Letra de feria",
+        "definition": "Orden de pago. Documento notarial por el que una persona se comprometía a abonar una cantidad a otra en una plaza distinta."
+    },
+    {
+        "term": "Liao",
+        "definition": "Dinastía creada por los Khitán que eobernó en Manchuria. Moneolia v norte SUS ESLULUIDS, EICLCCUILA dal UL LAULLUL."
+    },
+    {
+        "term": "Licentia docendi",
+        "definition": "Licencia para enseñas Se otorgaba tras concluir los estudios el una Escuela Catedralicia, un Estudi General o en la Universidad."
+    },
+    {
+        "term": "Legatus",
+        "definition": "Legado. Representante papal co1 plenos poderes en misión diplomática."
+    },
+    {
+        "term": "Leit motiv",
+        "definition": "Idea central de algo."
+    },
+    {
+        "term": "Liga",
+        "definition": "Asociación de ciudades o ciudadano: para la defensa mutua frente al poder Liga suiza, Liga lombarda."
+    },
+    {
+        "term": "Limosnería",
+        "definition": "Organismo de la Santa Sed: encargado de la distribución de las limos nas y subsidios para los pobres."
+    },
+    {
+        "term": "Linaje",
+        "definition": "Conjunto de antepasados de un:"
+    },
+    {
+        "term": "familia, especialmente aplicado a la",
+        "definition": "nobiliarias. Suelen tener un apellid común."
+    },
+    {
+        "term": "Lingúística",
+        "definition": "Ciencia que estudia el lengua je humano."
+    },
+    {
+        "term": "Logoteta",
+        "definition": "Biz. Alto funcionario civil a frente de un departamento o sekreta."
+    },
+    {
+        "term": "Lolardos",
+        "definition": "Movimiento político-religios«"
+    },
+    {
+        "term": "XIV y XV que propugnaba la pureza de l",
+        "definition": "religión y la pobreza del clero."
+    },
+    {
+        "term": "Longitud",
+        "definition": "Distancia de un punto a un meridiano. Puede ser Este u Oeste."
+    },
+    {
+        "term": "Lonja",
+        "definition": "Edificio civil, cuadrado o rectangu lar, dedicado a las transacciones comer. ciales típico de las grandes ciudades mer cantiles medievales."
+    },
+    {
+        "term": "Lord",
+        "definition": "Título de los miembro de la alt: nobleza inglesa."
+    },
+    {
+        "term": "Loto Blanco",
+        "definition": "Sociedad secreta china crea da para luchar contra el imperio mongol"
+    },
+    {
+        "term": "Luxemburgo",
+        "definition": "Dinastía alemana que dic varios emperadores y reinó también er o de Lasso, Monteverdi y Palestrina."
+    },
+    {
+        "term": "Maestrazgo",
+        "definition": "Territorio que agrupab: varias encomiendas bajo la jurisdicción de un maestre."
+    },
+    {
+        "term": "Maestre",
+        "definition": "Jerarquía superior en una Order Militar."
+    },
+    {
+        "term": "Magiar",
+        "definition": "Húngaro."
+    },
+    {
+        "term": "Magister scholarum",
+        "definition": "Jefe de las escuelas"
+    },
+    {
+        "term": "Representante episcopal en las Escuela",
+        "definition": "Catedralicias."
+    },
+    {
+        "term": "Magnates",
+        "definition": "Nobleza de rango superior « primera categoría. Nombre que se da el la Baja Edad Media a los miembros de patriciado urbano."
+    },
+    {
+        "term": "Magnaura",
+        "definition": "Biz. Gran palacio en Constan"
+    },
+    {
+        "term": "tinopla usado para recepciones y com",
+        "definition": "escuela palatina."
+    },
+    {
+        "term": "Magnus vir et juris cultissimus",
+        "definition": "Gran per sonaje y muy experto jurista."
+    },
+    {
+        "term": "Magog",
+        "definition": "Tierra o país donde habitaba Gog situada más allá del Caucaso."
+    },
+    {
+        "term": "Magreb",
+        "definition": "Mus. Nombre del norte de Áfric: correspondiente a Argelia, Marruecos ; Túnez."
+    },
+    {
+        "term": "Mahdí",
+        "definition": "Mus. Guiado. Personaje que apa recerá antes del Juicio Universal. Sobre nombre de varios personajes."
+    },
+    {
+        "term": "Maillotin",
+        "definition": "Nombre dado a la revuelta pari"
+    },
+    {
+        "term": "impuestos. Toma su nombre de las maza",
+        "definition": "de hierro (maillet) que usaban."
+    },
+    {
+        "term": "Majzán; Majzén",
+        "definition": "Mus. Almacén. En l: zona de Marruecos, organismo encarga do de las finanzas. Designa también e conjunto de la Administración."
+    },
+    {
+        "term": "Malik",
+        "definition": "Mus. Título equivalente a señor « «enherana rreros de origen turco o eslavo que gobel nó Egipto de 1250 hasta la conquist turca de 1517."
+    },
+    {
+        "term": "Mamluk",
+        "definition": "Mus. Mameluco."
+    },
+    {
+        "term": "Mandorla",
+        "definition": "Marco ovalado donde se escu. pe o pinta la figura de Cristo o la Virger"
+    },
+    {
+        "term": "Maniqueo",
+        "definition": "Persona que practica el man queísmo."
+    },
+    {
+        "term": "Maniqueísmo",
+        "definition": "Doctrina de carácter du: lista y gnóstica fundada por Menes e siglo IM a.C. Basada en la lucha del bie y del mal y la irresponsabilidad de la acciones humanas. Herejía."
+    },
+    {
+        "term": "Mánner der Arbeit",
+        "definition": "Hombres de trabajc Expresión que se aplica a los alemanes."
+    },
+    {
+        "term": "Mansa",
+        "definition": "Mus. Nombre que designa al rey emperador de Mali."
+    },
+    {
+        "term": "Marca",
+        "definition": "Región fronteriza a cuyo frent había un marqués o margrave."
+    },
+    {
+        "term": "Margrave",
+        "definition": "Título alemán equivalente marqués. Gobernador de una zona fror teriza O marca."
+    },
+    {
+        "term": "Mariscal",
+        "definition": "Título honorífico que se daba :"
+    },
+    {
+        "term": "responsable de la caballería y los est",
+        "definition": "blos."
+    },
+    {
+        "term": "Maristán",
+        "definition": "Mus. Hospital."
+    },
+    {
+        "term": "Martelogio",
+        "definition": "Ver Tablas de Martelogio."
+    },
+    {
+        "term": "Marwaníes",
+        "definition": "Mus. Son los 11 califas ome yas que descienden de ibn-Marwan."
+    },
+    {
+        "term": "Masmuda",
+        "definition": "Mus. Tribu bereber del Atlas d la que proceden los almohades."
+    },
+    {
+        "term": "Maula",
+        "definition": "Mus. Neoconverso. Musulmá manumitido que se integraba en la fami lia de su señor."
+    },
+    {
+        "term": "Mayorazgo",
+        "definition": "Institución de derecho civ"
+    },
+    {
+        "term": "medieval por la que se vinculan determ",
+        "definition": "nados bienes patrimoniales, al primogé nito, para evitar su dispersión. al Paulciauo y a la Clas UN Iscntt UE 1as ciudades."
+    },
+    {
+        "term": "Melquitas; Jacobitas",
+        "definition": "Nombre que se dió a los monofisitas que permanecieron fieles a la comunión imperial (málik, mélik) tras el concilio de Calcedonia (451)."
+    },
+    {
+        "term": "Memorandum",
+        "definition": "Informe que se realiza tras una determinada misión en el que se consigna lo más importante a tener en cuenta."
+    },
+    {
+        "term": "Mendicante",
+        "definition": "Fraile mendicante. Que pide limosna."
+    },
+    {
+        "term": "Meriníes",
+        "definition": "Mus. Rama bereber de la gran tribu de los zanata que gobernó Marruecos, y durante algún tiempo parte de alAndalus, de 1269 hasta 1465."
+    },
+    {
+        "term": "Merkid",
+        "definition": "Pueblo de origen turco mongol establecido al sur del lago Baikal."
+    },
+    {
+        "term": "Mésazon",
+        "definition": "Biz. Cargo honorífico equivalente a primer ministro."
+    },
+    {
+        "term": "Mesiánico",
+        "definition": "Referente al Mesías. Tiempo de expectación próximo al regreso del Mesías."
+    },
+    {
+        "term": "Mesoi, Mesotés",
+        "definition": "Biz. Clases medias bizantinas integradas por comerciantes, artesanos y funcionarios."
+    },
+    {
+        "term": "Mesopotamia",
+        "definition": "Entre ríos. Región situada entre el Tigris y el Eufrates."
+    },
+    {
+        "term": "Metropolitano",
+        "definition": "Biz. Obispo superior que tiene el control de varias diócesis. Equivalente a arzobispo."
+    },
+    {
+        "term": "Milicias concejiles",
+        "definition": "Ejército reclutado por una ciudad o villa entre sus habitantes para intervenir en acciones bélicas concretas."
+    },
+    {
+        "term": "Ming",
+        "definition": "Dinastía nacional que gobernó China desde 1368 hasta 1644,"
+    },
+    {
+        "term": "Mirabilia descripta",
+        "definition": "Descripción de cosas maravillacas e"
+    },
+    {
+        "term": "Mongoles",
+        "definition": "Etnia de origen asiático, que agrupaba diversas tribus, que hizo su aparición en Europa en el siglo XII llegando hasta Polonia y Hungría."
+    },
+    {
+        "term": "Monodia, Monódica",
+        "definition": "Canto interpretado por una solo voz o una sola melodía."
+    },
+    {
+        "term": "Monofisismo",
+        "definition": "Una naturaleza. Herejía según la cual en Cristo se confunden la naturaleza divina y la humana."
+    },
+    {
+        "term": "Monofisita",
+        "definition": "Adherido al monofisismo. Actualmente se extienden por Egipto. Etiopía, Eritrea y Siria."
+    },
+    {
+        "term": "Morabito",
+        "definition": "Mus. Lugar apartado donde vive o está enterrado un religioso musulmán y es objeto de peregrinación."
+    },
+    {
+        "term": "Motete",
+        "definition": "Composición musical perteneciente al ars nova."
+    },
+    {
+        "term": "Mozárabes",
+        "definition": "Mus. Cristianos que vivían en al-Andalus bajo el dominio musulmán."
+    },
+    {
+        "term": "Mudéjar",
+        "definition": "Estilo arquitectónico propio de la Península Ibérica que incorpora materiales (ladrillos) y elementos típicos del arte musulmán (yeserías, lazos, arcos)."
+    },
+    {
+        "term": "Muladíes",
+        "definition": "Mus. Adaptados. Musulmanes de origen cristiano."
+    },
+    {
+        "term": "Mulk",
+        "definition": "Mus. Tierras que se concedían a los miembros de la familia del sultán turco."
+    },
+    {
+        "term": "Murallas servianas",
+        "definition": "Murallas de Roma construidas en la época del rey etrusco Servio Tullio (siglo vi a.C.)."
+    },
+    {
+        "term": "Mustajlas",
+        "definition": "Mus. Patrimonio privado de los monarcas nazaríes de granada."
+    },
+    {
+        "term": "Mutazilismo",
+        "definition": "Mus. Secta musulmana del siglo Ix de fuerte inspiración racionalista. INAveESgaci0n a la Estrada. POLMa UL Calcula (estimar) la posición de la nave en el ma teniendo en cuenta diversas variantes rumbo, velocidad, deriva, vientos, etc."
+    },
+    {
+        "term": "Navegación astronómica",
+        "definition": "Navegación +"
+    },
+    {
+        "term": "posicionamiento del barco que se realiz",
+        "definition": "teniendo en cuenta la posición de lo. astros."
+    },
+    {
+        "term": "Navegación de altura",
+        "definition": "Aquella que se rea liza perdiendo de vista la costa."
+    },
+    {
+        "term": "Navegación de cabotaje",
+        "definition": "Aquella que sí"
+    },
+    {
+        "term": "realiza teniendo siempre la costa a l",
+        "definition": "vista."
+    },
+    {
+        "term": "Nazarí",
+        "definition": "Mus. Arte propio del reino de Gra"
+    },
+    {
+        "term": "nada que utiliza mucho las yeserías, l",
+        "definition": "cerámica y la madera. Dinastía que reind en Granada desde 1232 hasta 1492."
+    },
+    {
+        "term": "Negus",
+        "definition": "Título de los emperadores etíope: O abisinios."
+    },
+    {
+        "term": "Nepotismo",
+        "definition": "Del latín nepos (sobrino) Práctica tendente a otorgar cargos y empleos a familiares en detrimento de otros mejor preparados."
+    },
+    {
+        "term": "Nepotista",
+        "definition": "Que practica el nepotismo."
+    },
+    {
+        "term": "Nestorianismo",
+        "definition": "Biz. Herejía cristiana de siglo v sostenida por el patriarca Nestoric"
+    },
+    {
+        "term": "que veía en Cristo dos naturalezas sepa",
+        "definition": "radas y negaba que María fuera la madre de Dios."
+    },
+    {
+        "term": "Nestoriano",
+        "definition": "Seguidor de Nestorio. Actual. mente se encuentran en Oriente Medio y la India."
+    },
+    {
+        "term": "Nizaríes; Asesinos",
+        "definition": "Mus. Secta musulmana, minoritaria dentro del ismailismo, de siglo XI famosa por sus asesinatos políticos. Estuvo activa desde 1097 haste 1256. Wie lr E de ss a rea ión LE AA, OIL A e a un individuo con un jefe de su elecciór"
+    },
+    {
+        "term": "Nominalismo",
+        "definition": "Filosofía que negaba 1 existencia real de los conceptos universe les que eran simples abstracciones de 1 mente sin ningún tipo de existencia."
+    },
+    {
+        "term": "Nominalistas",
+        "definition": "Filósofos adscritos al nom! nalismo."
+    },
+    {
+        "term": "Norte geográfico",
+        "definition": "Es el punto de la Tierr que coincide con el Polo Norte."
+    },
+    {
+        "term": "Norte magnético",
+        "definition": "Dirección que señala | brújula. Se desplaza constantemente."
+    },
+    {
+        "term": "Numismática",
+        "definition": "Ciencia que estudia la monedas."
+    },
+    {
+        "term": "Nuntius",
+        "definition": "Nuncio. Mensajero. Person encargada de transmitir un mensaje Representante del Papa ante un Estado. 0)"
+    },
+    {
+        "term": "Obispado",
+        "definition": "Territorio sometido a la juris dicción de un obispo."
+    },
+    {
+        "term": "Obispo",
+        "definition": "Sacerdote y jerarca de la Iglesi cristiana que recibe todas órdenes sagra das."
+    },
+    {
+        "term": "Observantes",
+        "definition": "Congregación de la orde"
+    },
+    {
+        "term": "franciscana cuyos miembros practica",
+        "definition": "una pobreza rigurosa."
+    },
+    {
+        "term": "Ockamistas",
+        "definition": "Seguidores de las doctrina de Guillermo de Ockam."
+    },
+    {
+        "term": "Ogro",
+        "definition": "Voz derivada de ugro o húngaro indi cativa del terror causado en Europa po este pueblo."
+    },
+    {
+        "term": "Oguz",
+        "definition": "Tribu nómada de raza turcómana."
+    },
+    {
+        "term": "Omeya",
+        "definition": "Mus. Familia y dinastía califa (661-750) y de al-Andalus (756-1025 del clan qurayshí."
+    },
+    {
+        "term": "Ong Khan",
+        "definition": "Título que daban los chinos : morales y de conducta."
+    },
+    {
+        "term": "Órdenes",
+        "definition": "Cada una de las partes en las que se divide la sociedad medieval."
+    },
+    {
+        "term": "Ordo",
+        "definition": "Libro que indica el ritual a seguir en las ceremonias y ritos eclesiásticos."
+    },
+    {
+        "term": "Ortodoxo",
+        "definition": "Biz. Que sigue la recta doctrina. Bizantino."
+    },
+    {
+        "term": "Ortogonal",
+        "definition": "——-"
+    },
+    {
+        "term": "Otium",
+        "definition": "Ocio. Concepto humanista que identificaba el aprovechamiento del tiempo libre con la formación personal."
+    },
+    {
+        "term": "Otomanos",
+        "definition": "Mus. Pueblo turco independizado de los selyuquíes en la época de Osmán (1300) y acabó con el Imperio Bizantino (1453). lid"
+    },
+    {
+        "term": "Padroes",
+        "definition": "Monolitos de madera o piedra alzados por los portugueses para atestiguar sus descubrimientos en África."
+    },
+    {
+        "term": "Pagano",
+        "definition": "Habitante de un pagus. Para la Iglesia cristiana es todo el no bautizado."
+    },
+    {
+        "term": "Pahlavi",
+        "definition": "Lengua y literaturas persas de estilo culto. Persa."
+    },
+    {
+        "term": "Paleografía",
+        "definition": "Ciencia que estudia las escrituras antiguas."
+    },
+    {
+        "term": "Paleólogo",
+        "definition": "Biz. Última dinastía imperial de Bizancio que reinó entre 1261 y 1453."
+    },
+    {
+        "term": "Pange lingua",
+        "definition": "Canta lengua."
+    },
+    {
+        "term": "Panonia",
+        "definition": "Territorio que corresponde a la actual Hungría."
+    },
+    {
+        "term": "Panteísmo",
+        "definition": "Doctrina filosófica que atribuye un contenido divino a todas las cosas. Pan (todo) y theós (Dios)."
+    },
+    {
+        "term": "Papa",
+        "definition": "Padre. Máxima autoridad religiosa de la Iglesia católica. Título del Patriarca FUN TON los campesinos ante los grandes propietarios."
+    },
+    {
+        "term": "Parroquia",
+        "definition": "Agrupación de fieles cristianos a cuyo frente está un sacerdotes o párroCO,"
+    },
+    {
+        "term": "Partenopea",
+        "definition": "Nápoles."
+    },
+    {
+        "term": "Partida doble",
+        "definition": "Práctica contable en la que a dos columnas se anota el Debe y el Haber de un negocio."
+    },
+    {
+        "term": "Partitio Romaniae",
+        "definition": "Biz. Reparto del Imperio Bizantino tras su conquista por los cruzados en 1204"
+    },
+    {
+        "term": "Pataría",
+        "definition": "Movimiento espiritual y social de Milán para reivindicar la moralidad del clero."
+    },
+    {
+        "term": "Patronato regio",
+        "definition": "Facultad de los monarcas de proponer al Papa el nombramiento de cargos eclesiásticos en sus reinos."
+    },
+    {
+        "term": "Patriarca",
+        "definition": "Biz. Máxima autoridad religiosa en las Iglesias de Oriente."
+    },
+    {
+        "term": "Patriarcado",
+        "definition": "Territorio sobre el que ejerce su jurisdicción un patriarca. Los cuatro grandes patriarcados fueron Alejandría, Antioquía, Constantinopla y Jerusalén."
+    },
+    {
+        "term": "Patrimonio de San Pedro",
+        "definition": "Territorios bajo el poder temporal del Papa. Su origen data del siglo VIII."
+    },
+    {
+        "term": "Pauperes",
+        "definition": "Pobres. Nombre que recibía la masa urbana del pueblo. Opuesto a potentes."
+    },
+    {
+        "term": "Pax Dei",
+        "definition": "Paz de Dios. Institución o movimiento religioso para frenar los desmanes de los nobles frente a campesinos, peregrinos y mercaderes."
+    },
+    {
+        "term": "Pax mongólica; Pax mongolorum",
+        "definition": "Paz de los mongoles. Frase que describe los efectos estabilizadores de la conquista mongola en una amplísima zona geográrrección."
+    },
+    {
+        "term": "Perfectos",
+        "definition": "Entre los cátaros, personas dirigentes de la comunidad que llevaban una vida ejemplar."
+    },
+    {
+        "term": "Piats",
+        "definition": "Dinastía real que gobernó Polonia desde el 960 hasta 1370. Les sucedieron los Anjou de Hungría de 1370 a 1399."
+    },
+    {
+        "term": "Piqueros",
+        "definition": "Infantería armada con picas."
+    },
+    {
+        "term": "Pillar",
+        "definition": "Saquear. Devastar."
+    },
+    {
+        "term": "Plantagenet",
+        "definition": "Familia y dinastía inglesa de origen francés. Debe su nombre a la rama de retama o genista que el conde Godofredo de Anjou llevaba en su sombrero."
+    },
+    {
+        "term": "Platónico",
+        "definition": "Referente a Platón."
+    },
+    {
+        "term": "Platonismo",
+        "definition": "Sistema filosófico medieval de fuerte componente místico-especulativo basado en las doctrinas de Platón."
+    },
+    {
+        "term": "Plenitudio potestatis",
+        "definition": "Plena potestad. Potestad suprema."
+    },
+    {
+        "term": "Podestá",
+        "definition": "Representante o delegado imperial en las ciudades italianas."
+    },
+    {
+        "term": "Polano",
+        "definition": "Campesino. Pueblo eslavo que habitaba junto al río Varta. Dieron nombre a Polonia."
+    },
+    {
+        "term": "Pole",
+        "definition": "Campo."
+    },
+    {
+        "term": "Polifonía",
+        "definition": "Conjunto de varias voces que cantan armónicamente."
+    },
+    {
+        "term": "Polifónica",
+        "definition": "Canción interpretada a varias voces."
+    },
+    {
+        "term": "Poligamia",
+        "definition": "Forma de matrimonio que permite la unión de un hombre con varias mujeres contemporáneamente."
+    },
+    {
+        "term": "Poliorcética",
+        "definition": "Arte de construir, asediar y defender fortalezas."
+    },
+    {
+        "term": "Poll-Tax",
+        "definition": "Impuesto de carácter personal establecido en Inglaterra para sufragar los gastos de la Guerra de los Cien Años. Ms a a ass es sd e AAA A A gente en las ciudades italianas."
+    },
+    {
+        "term": "Pópolo minuto",
+        "definition": "Gente menuda, pobre y sin derechos de las ciudades italianas."
+    },
+    {
+        "term": "Portulano",
+        "definition": "Carta marítima de los siglo"
+    },
+    {
+        "term": "puertos y las costas y está representada l",
+        "definition": "rosa de los vientos."
+    },
+    {
+        "term": "Portus",
+        "definition": "Puerto. Lugar a las afueras de un: ciudad donde los mercaderes instalaba sus tiendas."
+    },
+    {
+        "term": "Posta",
+        "definition": "Servicio de correos."
+    },
+    {
+        "term": "Postrimerías",
+        "definition": "Según el catolicismo son lo: estadios que esperan al hombre despué"
+    },
+    {
+        "term": "de la vida",
+        "definition": "Muerte. juicio, infierno o glo ria."
+    },
+    {
+        "term": "Potentes",
+        "definition": "Poderosos. ricos. Nombre que recibían las clases dirigentes de las ciu dades."
+    },
+    {
+        "term": "Potestas",
+        "definition": "Potestad. Poder político que lo: monarcas recibían de Dios."
+    },
+    {
+        "term": "Praecarium",
+        "definition": "Precario. Disfrute de un bie sin tener la plena propiedad."
+    },
+    {
+        "term": "Praepositus",
+        "definition": "Encargado. Puesto al frente Preboste."
+    },
+    {
+        "term": "Preboste",
+        "definition": "Representante. Funcionari"
+    },
+    {
+        "term": "rentas y administraba justicia. El de lo",
+        "definition": "mercaderes controlaba los pesos y medi das y cobraba algunos impuestos."
+    },
+    {
+        "term": "Premíslidas",
+        "definition": "Primera dinastía checa di Moravia y Bohemia. Ocupó el trono de 870 hasta el 1306."
+    },
+    {
+        "term": "Presidios",
+        "definition": "Plazas fuertes españolas estable cidas en territorio extrapeninsular (Nort de Africa y Toscaza)."
+    },
+    {
+        "term": "Prestamista",
+        "definition": "Persona que presta dinero : cambio de un interés."
+    },
+    {
+        "term": "Prima Sedes a nemine iudicatur",
+        "definition": "La pri TA A - A EA E"
+    },
+    {
+        "term": "Prior",
+        "definition": "Monje al mando del abad que supervisa y dirige la vida diaria de la comunidad."
+    },
+    {
+        "term": "Proa",
+        "definition": "Parte delantera de un barco."
+    },
+    {
+        "term": "Próceres",
+        "definition": "Nobleza de primera categoría. Dirigentes de las ciudades."
+    },
+    {
+        "term": "Procurator",
+        "definition": "Procurador. Persona con poderes para negociar y proponer acuerdos."
+    },
+    {
+        "term": "Procuratores",
+        "definition": "Procuradores. Delegados o representantes de la autoridad."
+    },
+    {
+        "term": "Progrom",
+        "definition": "Movimiento violento antisemita que se originaba en las ciudades medievales en épocas de crisis, especialmente durante los siglos XIV y XV."
+    },
+    {
+        "term": "Pronoia",
+        "definition": "Biz. Cesión de tierras de dominio público en usufructo como pago por servicios."
+    },
+    {
+        "term": "Protestantismo",
+        "definition": "Corriente religiosa iniciada por Lutero, contra la Iglesia católica, que produjo la ruptura religiosa de Occidente."
+    },
+    {
+        "term": "Proyección de Mercátor",
+        "definition": "Forma de representar el globo terráqueo en el que los paralelos y meridianos son líneas rectas que se cortan perpendicularmente."
+    },
+    {
+        "term": "Pueblo de Dios",
+        "definition": "Nombre genérico con el que se conocía en Florencia a los ciompi."
+    },
+    {
+        "term": "Purgatorio",
+        "definition": "Según el catolicismo es el estadio intermedio en el que el alma purga la pena por el pecado antes de entrar en el cielo. Algunas lglesias cristianas cuestionan Su existencia."
+    },
+    {
+        "term": "Puros",
+        "definition": "Perfectos. Cátaros."
+    },
+    {
+        "term": "Púrpura",
+        "definition": "Cardenal: Cardenalato. Por el color púrpura de sus vestiduras."
+    },
+    {
+        "term": "Putting out system",
+        "definition": "Práctica artesanal en el campo textil fuera del control gremial por la aue tin natrona caontrataha directamen. LU ao."
+    },
+    {
+        "term": "Qarakaníes",
+        "definition": "Dinastía militar de la tribu de los qarluq."
+    },
+    {
+        "term": "Qarluq",
+        "definition": "Tribu nómada de raza turcómana de Transoxiana."
+    },
+    {
+        "term": "Qaysíes",
+        "definition": "Tribu árabe del norte de la Península arábiga dedicada al nomadismo y pastoreo."
+    },
+    {
+        "term": "Quadrivium",
+        "definition": "Cuatro vías. Conjunto de artes liberales (aritmética, astronomía, música y geometría)."
+    },
+    {
+        "term": "Quatrocento",
+        "definition": "Nombre que se da en Italia al siglo Xv."
+    },
+    {
+        "term": "Quattuor libri pricipiorum",
+        "definition": "Los cuatro libros de los principios."
+    },
+    {
+        "term": "Querella de las Investiduras",
+        "definition": "Lucha entre el Imperio y el Papado en el siglo XI para controlar los nombramientos episcopales."
+    },
+    {
+        "term": "Questio",
+        "definition": "Planteamiento de la cuestión en el método escolástico."
+    },
+    {
+        "term": "Questor sacri palatii",
+        "definition": "Biz. Especie de ministro de justicia."
+    },
+    {
+        "term": "Quilla",
+        "definition": "Parte del barco que va de proa a popa sobre la que se construye toda la estructura del barco."
+    },
+    {
+        "term": "Quod principi placuit legis habet vigorem",
+        "definition": "Lo que agrada al príncipe tiene fuerza de ley."
+    },
+    {
+        "term": "Rábita",
+        "definition": "Ríbar. San Carlos de la Rápita. La Rábida."
+    },
+    {
+        "term": "Ratio pecati",
+        "definition": "Delitos o pecados cuya absolución está reservada únicamente al Papa."
+    },
+    {
+        "term": "Rawandíes",
+        "definition": "Mus. Movimiento favorable a los abasíes desarrollado en el Jurasán. WE e a ir es da ¿ds PU0 UE LOS SISIOS AY Y AVI QUE PIODUSHAba una vuelta a los cánones clásico en todos los órdenes de la cultura."
+    },
+    {
+        "term": "Renano",
+        "definition": "Perteneciente a la Renania. De la zona del Rin."
+    },
+    {
+        "term": "Renovatio Imperii Romanorum",
+        "definition": "Renovación o restauración del Imperio Romano."
+    },
+    {
+        "term": "República",
+        "definition": "Forma de gobierno típica de las ciudades italianas medievales en las que el poder era ejercido por los representantes elegidos por el pueblo. Génova. Venecia."
+    },
+    {
+        "term": "República de San Pedro",
+        "definition": "Estados pontificios."
+    },
+    {
+        "term": "Responsio",
+        "definition": "Tercera parte de los ingresos de las Ordenes Militares que se enviaban 4 Tierra Santa."
+    },
+    {
+        "term": "Res privata",
+        "definition": "Cosa privada. Lo que pertenece a los privados en oposición a res publica."
+    },
+    {
+        "term": "Res publica",
+        "definition": "Cosa pública. Lo que pertenece al Estado en oposición a lo privado. República."
+    },
+    {
+        "term": "Respublica christiana",
+        "definition": "República cristiana. La cristiandad, en especial la católica."
+    },
+    {
+        "term": "Retórica",
+        "definition": "Arte de hablar bien en público. Uso de técnicas y recursos dirigidos a construir un discurso."
+    },
+    {
+        "term": "Rey Apostólico",
+        "definition": "Monarca que debe su nombramiento a la expresa voluntad del Papa."
+    },
+    {
+        "term": "Rex et sacerdos",
+        "definition": "Rey y sacerdote."
+    },
+    {
+        "term": "Rex imperator est in regno suo",
+        "definition": "El rey es un emperador en su reino. Expresión que significa que por encima del rey no hay ningún otro poder en su reino ya que él posee el imperium (mando supremo)."
+    },
+    {
+        "term": "Rhila",
+        "definition": "Mus. Viaje. Género literario del ts rs tds a Tes mar Só A A otros compuestos en una modalida diversa."
+    },
+    {
+        "term": "Rosa de los vientos",
+        "definition": "Círculo en el que s representan los treinta y dos rumbos el"
+    },
+    {
+        "term": "los que se divide la circunferencia. Cad",
+        "definition": "uno mide 11% 15\"."
+    },
+    {
+        "term": "Rota",
+        "definition": "Rueda. Sala circular donde se reuní el Tribunal de la Sacra Rota."
+    },
+    {
+        "term": "Rotación bienal",
+        "definition": "Sistema de cultivo en e que las tierras se cultivan un año y otr en barbecho."
+    },
+    {
+        "term": "Rotación trienal",
+        "definition": "Sistema de cultivo en e"
+    },
+    {
+        "term": "que una parcela se deja en barbecho cad",
+        "definition": "tres años."
+    },
+    {
+        "term": "Rotatim",
+        "definition": "De manera rotativa. Alternativa mente."
+    },
+    {
+        "term": "Rum",
+        "definition": "Nombre que daban los turcos a lo antiguos territorios bizantinos."
+    },
+    {
+        "term": "Rumbo",
+        "definition": "Dirección en la que se mueve e barco. Se establece calculando el ángul. de la dirección del barco respecto a otr fijo (meridiano)."
+    },
+    {
+        "term": "Rumeli",
+        "definition": "Mus. Romano. Nombre que dabas los turcos a los territorios del Imperis Bizantino."
+    },
+    {
+        "term": "Routiers",
+        "definition": "Nombre que se daba a los mer"
+    },
+    {
+        "term": "cenarios de la Guerra de los Cien año",
+        "definition": "que se dedicaba al saqueo y al pillaj cuando quedaban desocupados."
+    },
+    {
+        "term": "Rus",
+        "definition": "Nombre que se atribuía a los antiguo. rusos de origen varego."
+    },
+    {
+        "term": "Sanyáqs",
+        "definition": "Mus. Circunscripciones adminis trativas turcas al frente de las cuales esta ba un hijo del sultán. O A A la 1glesta 10 ejerce el Cardenal Camariengo. Sefarad (España)."
+    },
+    {
+        "term": "Sefardíes",
+        "definition": "Judíos de origen español."
+    },
+    {
+        "term": "Sekreta",
+        "definition": "Biz. Departamento u oficinas de la administración central."
+    },
+    {
+        "term": "Selyuquí",
+        "definition": "Mus. Dinastía turca que gobernó en Asia Menor y Egipto. Provocaron las cruzadas. Fundó el Sultanato de Rum donde gobernó de 1077 hasta 1307."
+    },
+    {
+        "term": "Senescal",
+        "definition": "Nombre genérico de un gran funcionario que existía en todas cortes con un cometido muy diverso de unas a otras."
+    },
+    {
+        "term": "Sententia",
+        "definition": "Sentencia. Conclusión a la que se llega en el método escolástico."
+    },
+    {
+        "term": "Señoría",
+        "definition": "Nombre que se da a la República de Venecia y a otras ciudades-república italianas. Forma de gobierno que se da en algunas ciudades italianas en las que una familia ejerce todo el poder."
+    },
+    {
+        "term": "Señorío jurisdiccional",
+        "definition": "Aquel en el que el señor percibe parte de los impuestos directos o indirectos pertenecientes a la Corona."
+    },
+    {
+        "term": "Serpentina",
+        "definition": "Cañón pequeño provisto de un tubo en forma de S donde se ponía la pólvora."
+    },
+    {
+        "term": "Servus servorum Dei",
+        "definition": "Siervo de los siervos de Dios. Uno de los títulos que usan los Papas desde que en el siglo vi lo adoptase San Gregorio 1 Magno."
+    },
+    {
+        "term": "Sextante",
+        "definition": "Instrumento que medía la altura de los astros respecto al horizonte y servía para calcular la hora. Es un astrolabio perfeccionado."
+    },
+    {
+        "term": "Sforza",
+        "definition": "Familia italiana que se hizo con el Ducado de Milán en 1450 y lo retuvo hasta 1535, ES A ns A lc a o lcd o sanos"
+    },
+    {
+        "term": "Shura",
+        "definition": "Mus Sura."
+    },
+    {
+        "term": "Sic transit gloria mundi",
+        "definition": "Así pasa la gloria del mundo."
+    },
+    {
+        "term": "Sigilografía",
+        "definition": "Ciencia que estudia los sellos de los documentos oficiales."
+    },
+    {
+        "term": "Siglos de Hierro",
+        "definition": "Periodo en el que el Papado estuvo en manos de las grandes familias romanas (siglos IX y X)."
+    },
+    {
+        "term": "Simonía",
+        "definition": "Compraventa de cargos eclesiásticos. Simón el Mago fue censurado por s. Pedro."
+    },
+    {
+        "term": "Simoníaco",
+        "definition": "Que practica la simonía y a ella debe su elección."
+    },
+    {
+        "term": "Sincretismo",
+        "definition": "Intento de conciliar varias teorías o doctrinas distintas, especialmente religiosas."
+    },
+    {
+        "term": "Sine die",
+        "definition": "En un futuro sin fecha."
+    },
+    {
+        "term": "Sínodo",
+        "definition": "Reunión de obispos de un reino o región. Sus decisiones afectan sólo a sus diócesis."
+    },
+    {
+        "term": "Sismán",
+        "definition": "Dinastía que reinó en Bulgaria desde el siglo Xx hasta el inicio de la ocupación turca (1398)."
+    },
+    {
+        "term": "Sola fides",
+        "definition": "Sólo la fe. Indica que la fe en Cristo es suficiente para la salvación."
+    },
+    {
+        "term": "Solidus",
+        "definition": "Biz. Moneda de oro cuyo valor varió según las épocas entre 3,75 y 4,5 grs."
+    },
+    {
+        "term": "Song",
+        "definition": "Dinastía imperial China que logró la reunificación del país. Reinó desde 960 hasta 1224, siendo sustituída por la dinastía mongola de los Yuan."
+    },
+    {
+        "term": "Stabat mater",
+        "definition": "Estaba la madre (María). Canto cristiano que recuerda los dolores de la Virgen."
+    },
+    {
+        "term": "Statu quo",
+        "definition": "Estado actual de las cosas o de 1na necnaciacián A y4 y EU A fuera de la ciudad casi nunca amurallados."
+    },
+    {
+        "term": "Sueldo",
+        "definition": "Moneda de cuenta equivalente 1/20 de libra. Un sueldo tiene 12 dineros"
+    },
+    {
+        "term": "Sufí",
+        "definition": "Mus. Practicante del sufismo. Proce de de suf=lana."
+    },
+    {
+        "term": "Sufismo",
+        "definition": "Mus. Movimiento de carácte místico dentro del Islam surgido en Tur quía."
+    },
+    {
+        "term": "Sultán",
+        "definition": "Mus. Título utilizado por los pue blos de origen turco equivalente a rey."
+    },
+    {
+        "term": "Sultanato",
+        "definition": "Mus. Territorio donde el sultá: ejerce su poder (Selyuquí, mameluco otomano)."
+    },
+    {
+        "term": "Suma, Summa",
+        "definition": "Tratado o recopilación di todo lo referente a una materia."
+    },
+    {
+        "term": "Sunna",
+        "definition": "Mus. Vía, método, conducta. Lo: escritos más importantes después de Corán."
+    },
+    {
+        "term": "Sunníes",
+        "definition": "Mus. Musulmanes que aceptan l. sunna. Constituyen la mayoría del Islam"
+    },
+    {
+        "term": "Sura",
+        "definition": "Mus. Cada uno de los 114 capítulo: en los que se divide el Corán."
+    },
+    {
+        "term": "Ta'as",
+        "definition": "Mus. Distritos militares."
+    },
+    {
+        "term": "Tablas de Martelogio",
+        "definition": "Prontuario de fór mulas matemáticas de origen venecian para calcular rápidamente la desviaciór de la ruta de un barco."
+    },
+    {
+        "term": "Taboritas",
+        "definition": "Husitas exaltados y radicale: que tenían su centro en la ciudad di Tábor."
+    },
+    {
+        "term": "Tafsir",
+        "definition": "Mus. Género literario inspirado er el cultivo del árabe utilizado en el Corán"
+    },
+    {
+        "term": "Tagmas; Tágmata",
+        "definition": "Biz. Tropas mercena li Il; AA DU RN in di a a e el 5% las actividades comerciales."
+    },
+    {
+        "term": "Tang",
+        "definition": "Dinastía imperial China que gobern en todo el país desde 618 hasta 907. Tre su final, China se disgregó en cinco re nos en el norte y ocho reinos en el su hasta la dinastía Song."
+    },
+    {
+        "term": "Tangut; Tungut",
+        "definition": "Pueblo mongol dedicad al comercio y al pastoreo que habitaba | Mongolia Interior."
+    },
+    {
+        "term": "Tangutios",
+        "definition": "Ver tangut."
+    },
+    {
+        "term": "Tariga",
+        "definition": "Mus. Cofradía o hermandad sufí."
+    },
+    {
+        "term": "Tártaro",
+        "definition": "Mus. Pueblo de raza turcóman asentado en el bajo Volga y en la zona d Crimen."
+    },
+    {
+        "term": "Ta-Tu",
+        "definition": "La \"Gran capital\". Nombre que dic ron los mongoles a Pekín."
+    },
+    {
+        "term": "Taumatúrgico",
+        "definition": "Milagroso."
+    },
+    {
+        "term": "Taumaturgo",
+        "definition": "Que obra milagros."
+    },
+    {
+        "term": "Tenencia",
+        "definition": "Uso y disfrute de algo sin poses la plena propiedad."
+    },
+    {
+        "term": "Tengri",
+        "definition": "Dios mongol representado por « cielo."
+    },
+    {
+        "term": "Teocracia",
+        "definition": "Gobierno de Dios. De theo (Dios) y kratos (mando) Sistema polític en el que la religión y sus representante ejercen el poder."
+    },
+    {
+        "term": "Teología",
+        "definition": "Estudio o conocimiento de Dio: La teología católica estudia a Dios a pas tir de la fe apoyada en la razón."
+    },
+    {
+        "term": "Teoría conciliar",
+        "definition": "Doctrina que propugna | superioridad del Concilio sobre el Papa."
+    },
+    {
+        "term": "Tercer Estado",
+        "definition": "En la Baja Edad Media er"
+    },
+    {
+        "term": "la parte de la sociedad distinta a la nob",
+        "definition": "liaria y a la clerical."
+    },
+    {
+        "term": "Terciarias",
+        "definition": "Orden tercera."
+    },
+    {
+        "term": "Thema",
+        "definition": "Biz. Unidades territoriales d carácter administrativo y militar creada A E o a e a a tr \"a senores que controlan el poder en una ciudad sin reconocer los derechos imperiales o papales sobre la misma."
+    },
+    {
+        "term": "Fipografía",
+        "definition": "Arte de imprimir."
+    },
+    {
+        "term": "Fipógrafo",
+        "definition": "Persona que se dedica al arte de imprimir libros."
+    },
+    {
+        "term": "Fomista",
+        "definition": "Doctrina perteneciente a Santo Tomás de Aquino que representa la culminación de la escolástica. Seguidor de Santo Tomás."
+    },
+    {
+        "term": "Foponimia",
+        "definition": "Ciencia que estudia los nombres de los lugares para explicar su origen."
+    },
+    {
+        "term": "Torneos",
+        "definition": "Combates a caballo en los que los nobles demostraban sus habilidades y destrezas."
+    },
+    {
+        "term": "[ransubstanciación",
+        "definition": "Para la Iglesia Católica es el término que define el cambio del pan y el vino en el cuerpo y la sangre de Cristo."
+    },
+    {
+        "term": "Prastámara",
+        "definition": "Dinastía castellana que reinó en Castilla, Aragón, Navarra y Nápoles. Toma su nombre del condado de Trastámara (Galicia)."
+    },
+    {
+        "term": "Tribunal de la Sacra Rota",
+        "definition": "Organismo de la Santa Sede compuesto por doce miembros encargados de resolver las apelaciones que llegaban al Papa."
+    },
+    {
+        "term": "Trinacria",
+        "definition": "Nombre dado a la isla de Sicilia tras la paz de Caltabellota (1302) y que deriva del nombre griego (Tres lados)."
+    },
+    {
+        "term": "Trivium",
+        "definition": "Tres vías. Estudios que comprendían la Gramática, Retórica y Dialéctica."
+    },
+    {
+        "term": "Tudor",
+        "definition": "Dinastía inglesa que reinó desde 1485 hasta 1603, recogiendo la herencia de los Cork y los Lancáster. So emblema era una rosa con diez pétalos, cinco blancos por los Cork y cinco rojos por los Lancáster. — A ss e RS A cómano y religión musulmana que había la actual región china de Xinjián."
+    },
+    {
+        "term": "Ulema",
+        "definition": "Mus. Experto en Derecho musulmán. Por su prestigio podían legitimar el poder de un sultán o emir."
+    },
+    {
+        "term": "Ultramar",
+        "definition": "En época medieval se aplica este término a los territorios situados en el extremo oriental del Mediterráneo."
+    },
+    {
+        "term": "Ultramontanos",
+        "definition": "Del otro lado de los montes."
+    },
+    {
+        "term": "Ulus",
+        "definition": "Nación. Pueblo. Distrito. Provincia. Patrimonio personal de cada uno de los hijos de Gengi Khan."
+    },
+    {
+        "term": "Umma",
+        "definition": "Mus. Comunidad o conjunto que forman todos los creyentes musulmanes."
+    },
+    {
+        "term": "Ungido",
+        "definition": "Se aplica al monarca consagrado con los santos óleos."
+    },
+    {
+        "term": "Universitas",
+        "definition": "Universidad. Asociación de profesores o de profesores y estudiantes en la Edad Media. Institución que imparte estudios superiores."
+    },
+    {
+        "term": "Usufructo",
+        "definition": "Sistema de explotación de la tierra a cambio de un canon. Uso y disfrute de un bien sin poseer la nuda propiedad del mismo."
+    },
+    {
+        "term": "Usura",
+        "definition": "Interés abusivo que se cobre por un préstamo."
+    },
+    {
+        "term": "Utraquitas o utraquistas",
+        "definition": "Husitas moderados cuyo distintivo era la comunión bajo las dos especies (pan y vino). Su nombre deriva de utraque species (ambas especies). v"
+    },
+    {
+        "term": "Valdenses",
+        "definition": "Herejía del siglo XII que rechazaba algunos sacramentos y dogmas de Ya Titaís A E IEA A CIO"
+    },
+    {
+        "term": "Via cessionis",
+        "definition": "Solución a la que se llega po la cesión o renuncia de una de las partes"
+    },
+    {
+        "term": "Via concilii",
+        "definition": "Solución acordada por ur Concilio."
+    },
+    {
+        "term": "Via conventionis",
+        "definition": "Solución acordada tras e encuentro y discusión entre las partes."
+    },
+    {
+        "term": "Via facti",
+        "definition": "Solución por la imposición (mili: tar) de una de las partes sobre la otra."
+    },
+    {
+        "term": "Vikingo",
+        "definition": "Normando."
+    },
+    {
+        "term": "Villano",
+        "definition": "Habitante de una villa."
+    },
+    {
+        "term": "Villanueva",
+        "definition": "Nombre de numerosas pobla. ciones que indican su nueva creación."
+    },
+    {
+        "term": "Virelay o virolay",
+        "definition": "Forma musical fija en le"
+    },
+    {
+        "term": "que un estribillo se alterna con estrofa",
+        "definition": "divididas, a su vez, en dos partes."
+    },
+    {
+        "term": "Viri poenitentiales",
+        "definition": "Hombres de penitencia. Primer nombre que dio San Francisco de Asís a sus compañeros."
+    },
+    {
+        "term": "Visconti",
+        "definition": "Familia noble del norte de Itali: que se hizo con el gobierno de Milán de 1277 a 1447. Alcanzaron por compra e título ducal en 1395."
+    },
+    {
+        "term": "Visigodos",
+        "definition": "Pueblo germánico instalado er la Península Ibérica en el siglo V cuyc final se produjo tras la invasión musulmana de 711."
+    },
+    {
+        "term": "Visir",
+        "definition": "Funcionario de origen persa, especie de primer ministro, del califato abasí Algunos crearon auténticas dinastías como los Barmékidas."
+    },
+    {
+        "term": "Vizconde",
+        "definition": "Título nobiliario con rango inferior al conde."
+    },
+    {
+        "term": "Voivoda",
+        "definition": "Gobernador y jefe del ejército de una provincia."
+    },
+    {
+        "term": "Volta",
+        "definition": "Gran giro que los marinos portugueses hacían en pleno atlántico aprovechando los vientos dominantes para regresai a Partioal a dahlar el Caha de Riiena \"A"
+    },
+    {
+        "term": "Xi Xiá",
+        "definition": "Dinastía creada por los tangut e: el norte de China que reconocía a lo Song. Gobernó de 982 hasta 1227, al se derrotada por los mongoles."
+    },
+    {
+        "term": "Xuriltai",
+        "definition": "Ver Kuriltai."
+    },
+    {
+        "term": "Yafarí",
+        "definition": "Mus. Escuela jurídica propia de lo chiítas."
+    },
+    {
+        "term": "Yemeníes",
+        "definition": "Mus. Kalbíes."
+    },
+    {
+        "term": "Yihad",
+        "definition": "Mus. Esfuerzo interior. Guerr santa."
+    },
+    {
+        "term": "Yizya",
+        "definition": "Mus. Impuesto de carácter persona que pagaban sólo los dimmíes."
+    },
+    {
+        "term": "York",
+        "definition": "Dinastía real inglesa que reinó d: 1461 a 1485. Su emblema tenía una ros con cinco pétalos blancos."
+    },
+    {
+        "term": "Yuan",
+        "definition": "Dinastía de origen mongol, sucesor. de los Song, que gobernó en China di 1259 a 1368. Su principal representant fue Kubilay Khan."
+    },
+    {
+        "term": "Yund",
+        "definition": "Mus. Acantonamientos militares d la primera época musulmana instalado en Siria y Egipto."
+    },
+    {
+        "term": "Yurta",
+        "definition": "Tienda de campaña de fieltro y pie les, de forma circular y techo cónico, uti lizada por los pueblos nómadas de la estepas asiáticas, especialmente por lo mongoles."
+    },
+    {
+        "term": "Zagüía",
+        "definition": "Mus. Especie de ermita donde s halla la tumba de un santón musulmán ; es objeto de peregrinación."
+    },
+    {
+        "term": "Zaharíes",
+        "definition": "Mus. Ver Buryíes. y de algunos monarcas eslavos."
+    },
+    {
+        "term": "Zenetes",
+        "definition": "Mus. Zanata."
+    }
+];
+
+
+let current = 0;
+let score = 0;
+let quiz = [];
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function startFlashcards() {
+    current = 0;
+    shuffle(cards);
+    renderFlashcard();
+}
+
+function renderFlashcard() {
+    const c = cards[current];
+
+    document.getElementById("game").innerHTML = `
+        <div class="term">${c.term}</div>
+
+        <button class="primary" onclick="showDefinition()">
+            Mostrar definición
+        </button>
+
+        <div id="definition" class="definition hidden">
+            ${c.definition}
+        </div>
+
+        <br>
+
+        <button class="secondary" onclick="nextCard()">
+            Siguiente
+        </button>
+
+        <div class="score">
+            Tarjeta ${current + 1} / ${cards.length}
+        </div>
+    `;
+}
+
+function showDefinition() {
+    document.getElementById("definition").classList.remove("hidden");
+}
+
+function nextCard() {
+    current++;
+
+    if (current >= cards.length) {
+        current = 0;
+    }
+
+    renderFlashcard();
+}
+
+function startQuiz() {
+    score = 0;
+    current = 0;
+    quiz = [...cards];
+
+    shuffle(quiz);
+
+    renderQuiz();
+}
+
+function normalize(text) {
+    return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+function renderQuiz() {
+
+    if (current >= quiz.length) {
+
+        document.getElementById("game").innerHTML = `
+            <h2>Juego terminado</h2>
+            <p>Puntuación: ${score} / ${quiz.length}</p>
+            <button class="primary" onclick="startQuiz()">
+                Volver a jugar
+            </button>
+        `;
+
+        return;
+    }
+
+    const c = quiz[current];
+
+    document.getElementById("game").innerHTML = `
+        <div class="definition">${c.definition}</div>
+
+        <input id="answer" placeholder="Escribe el término...">
+
+        <button class="primary" onclick="checkAnswer()">
+            Comprobar
+        </button>
+
+        <div id="feedback"></div>
+
+        <div class="score">Puntos: ${score}</div>
+    `;
+}
+
+function checkAnswer() {
+
+    const user = normalize(document.getElementById("answer").value);
+    const correct = normalize(quiz[current].term);
+
+    const feedback = document.getElementById("feedback");
+
+    if (user === correct) {
+
+        score++;
+
+        feedback.innerHTML = "<p style='color:green'>¡Correcto!</p>";
+
+    } else {
+
+        feedback.innerHTML = `
+            <p style='color:red'>
+                Incorrecto. Era: <b>${quiz[current].term}</b>
+            </p>
+        `;
+    }
+
+    current++;
+
+    setTimeout(renderQuiz, 1400);
+}
+
+startFlashcards();
+
+</script>
+
+</body>
+</html>
+```
+
+---
+
+## Texto extraído del PDF (primeras definiciones)
+
+* Ábaco: Instrumento que servía para realizar manualmente cálculos aritméticos mediante un sistema de bolas móviles.
+* A capella: Canto interpretado únicamente con la voz y sin acompañamiento musical.
+* Abad: Superior de un monasterio.
+* Abadía: Monasterio regido por un abad o una abadesa.
+* Aceifa: Expedición militar de corta duración.
+* Ad hoc: Para esto. Para una cosa concreta.
+* Aguja de marear: Precedente inmediato de la brújula.
+* Alcaide: Jefe militar de una fortaleza.
+* Aleya: Cada uno de los versículos del Corán.
+* Alisios: Vientos constantes entre trópicos y ecuador.
+
+Puedes seguir añadiendo automáticamente más términos dentro del array `cards`.
